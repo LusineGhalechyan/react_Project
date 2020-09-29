@@ -4,19 +4,16 @@ import Name from "./Name";
 import Price from "./Price";
 
 class Product extends Component {
-  styles = {
-    margin: "0 5px",
-  };
-
   render() {
-    const props = this.props;
+    const { description, price, usd, name } = this.props;
+
     return (
       <>
-        <Description description={props.description} style={this.styles} />
+        <Description description={description} />
         Price is
-        <Price price={props.price} style={this.styles} />
+        <Price price={price} usd={usd} />
         for one kg
-        <Name name={props.name} style={this.styles} />
+        <Name name={name} />
       </>
     );
   }
