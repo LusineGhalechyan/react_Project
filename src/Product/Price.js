@@ -14,8 +14,8 @@ class Price extends Component {
     let { price, usd } = this.state;
 
     price.includes("$")
-      ? (price = `${parseInt(price) * usd}֏`)
-      : (price = `${parseInt(price) / usd}$`);
+      ? (price = `${parseFloat(price) * usd}֏`)
+      : (price = `${parseFloat(price) / usd}$`);
 
     this.setState({ price });
   };
