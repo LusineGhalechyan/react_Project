@@ -1,16 +1,11 @@
 import React from "react";
-import Product from "./Product/Product";
 import "./App.css";
+import ToDo from "./ToDo/ToDo";
 
 function App() {
   return (
     <div className="price-container">
-      <Product
-        name="banana."
-        price="1$"
-        description="Fresh bananas from Ecuador."
-        usd="487"
-      />
+      <ToDo />
     </div>
   );
 }
