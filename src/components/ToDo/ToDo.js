@@ -1,18 +1,14 @@
 import React, { Component } from "react";
-import Task from "../Tasks/Task/Task";
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   document.querySelector("p").innerHTML = null;
-// });
+import idGenerator from "../../helpers/idGenerator";
+import Task from "../Task/Task";
 
 class ToDo extends Component {
   state = {
-    tasks: [""],
+    tasks: [],
     inputValue: "",
   };
 
   handleChangeInput = (event) => {
-    // console.log("event.target.value", event.target.value);
     this.setState({ inputValue: event.target.value });
   };
 
@@ -24,9 +20,14 @@ class ToDo extends Component {
     });
   };
   render() {
-    // console.log("tasks", this.state.tasks);
-    // console.log("input", this.state.inputValue);
     const { tasks, inputValue } = this.state;
+    const addTasks = (
+      <ol>
+        {tasks.map((task) => (
+          <Task key={idGenerator()} task={task} />
+        ))}
+      </ol>
+    );
     return (
       <div>
         <div>
@@ -42,9 +43,7 @@ class ToDo extends Component {
           onChange={this.handleChangeInput}
         />
         <button onClick={this.handleAddTask}>Add task</button>
-        {tasks.map((task, index) => (
-          <Task key={index} task={task}></Task>
-        ))}
+        {addTasks}
       </div>
     );
   }
