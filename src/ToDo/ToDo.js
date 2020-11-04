@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Task from "../Tasks/Task/Task";
+import Task from "../Task/Task";
 
 // document.addEventListener("DOMContentLoaded", () => {
 //   document.querySelector("p").innerHTML = null;
