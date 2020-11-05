@@ -1,10 +1,13 @@
 import React from "react";
-import "./App.css";
+import "./App.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
+import ToDoImg from "./components/ToDoImg/ToDoImg";
 import ToDo from "./components/ToDo/ToDo";
 
 function App() {
   return (
-    <div className="price-container">
+    <div>
+      <ToDoImg />
       <ToDo />
     </div>
   );

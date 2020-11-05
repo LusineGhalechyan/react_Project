@@ -1,0 +1,17 @@
+.toDoContentContainer {
+  margin: 0px auto 0px 250px;
+
+  .formcontrol {
+    width: 50% !important;
+  }
+
+  .addTaskButton {
+    font-weight: 500;
+    background-color: #4fc3f7;
+    border: 1px solid #ff4d94;
+
+    &:hover {
+      background-color: #ff4d94;
+    }
+  }
+}
