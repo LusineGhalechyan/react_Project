@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import idGenerator from "../../helpers/idGenerator";
-import ArmFlag from "../ArmFlag/ArmFlag";
 import Task from "../Task/Task";
 import styles from "./ToDo.module.scss";
 import {
   Col,
   Row,
   Container,
+  Form,
   InputGroup,
   FormControl,
   Button,
+  Card,
 } from "react-bootstrap";
+import ArmFlag from "../ArmFlag/ArmFlag";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 class ToDo extends Component {
   state = {
@@ -18,68 +22,100 @@ class ToDo extends Component {
     inputValue: "",
   };
 
-  handleChangeInput = (event) => {
+  handleInputChange = (event) => {
     this.setState({ inputValue: event.target.value });
   };
 
-  handleAddTask = () => {
+  // handleOnKeyDown = (event) => {
+  //   return event.key === "Enter" ? this.handleAddTask() : null;
+  // };
+
+  handleAddTask = (event) => {
+    event.preventDefault();
+
     const { tasks, inputValue } = this.state;
+
+    const newTask = {
+      text: inputValue,
+      _id: idGenerator(),
+    };
+
     this.setState({
-      tasks: [...tasks, inputValue],
+      tasks: [...tasks, newTask],
       inputValue: "",
     });
   };
+
+  removeTask = (task) => {
+    const { tasks } = this.state;
+    const filteredTasks = tasks.filter((t) => t._id !== task._id);
+    this.setState({
+      tasks: filteredTasks,
+    });
+  };
+
   render() {
     const { tasks, inputValue } = this.state;
     const addTasks = (
-      <ol>
+      <Row>
         {tasks.map((task) => (
-          <Col key={idGenerator()}>
-            <Task task={task} />
+          <Col key={task._id} xs={12} md={4}>
+            <Card className="mb-3">
+              <Form.Group
+                controlId="formBasicCheckbox"
+                className={styles.checkBox}
+              >
+                <Form.Check type="checkbox" />
+              </Form.Group>
+              <Card.Body>
+                <Card.Title>{task.text.slice(0, 5) + "..."}</Card.Title>
+                <Card.Text>
+                  <Task task={task.text} />
+                </Card.Text>
+                <Button variant="warning" className={styles.buttonWarning}>
+                  <FontAwesomeIcon icon={faEdit} />
+                </Button>
+                <Button variant="danger" onClick={() => this.removeTask(task)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </Button>
+              </Card.Body>
+            </Card>
           </Col>
         ))}
-      </ol>
+      </Row>
     );
 
-    const formControllClass = styles.formcontrol;
-    const splitSecondPart = formControllClass.split("_")[1];
-    const getIndex = splitSecondPart.indexOf("c");
-    const form = splitSecondPart.substr(0, getIndex);
-    const control = splitSecondPart.substr(getIndex);
-    const formControl = form + "-" + control;
-
-    console.log("splittedClass", formControl);
-
     return (
-      <div className={styles.toDoContentContainer}>
-        <div>
+      <Container>
+        <Row className="justify-content-center">
           <ArmFlag />
-        </div>
-        <Container>
-          <Row sm={2}>
-            <InputGroup className="mb-3">
-              <FormControl
-                type="text"
-                value={inputValue}
-                aria-label="task's name"
-                aria-describedby="data"
-                placeholder="Type your task"
-                className={formControl}
-                onChange={this.handleChangeInput}
-              />
-              <InputGroup.Append>
-                <Button
-                  onClick={this.handleAddTask}
-                  className={`${styles.addTaskButton} ml-2`}
-                >
-                  Add task
-                </Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Row>
-          {addTasks}
-        </Container>
-      </div>
+          <Col xs={12} md={10} lg={8}>
+            <Form onSubmit={this.handleAddTask}>
+              <InputGroup className="mb-4">
+                <FormControl
+                  type="text"
+                  value={inputValue}
+                  aria-label="task's name"
+                  aria-describedby="data"
+                  placeholder="Type your task"
+                  onChange={this.handleInputChange}
+                  // onKeyDown={this.handleOnKeyDown}
+                />
+                <InputGroup.Append>
+                  <Button
+                    type="submit"
+                    className={`${styles.addTaskButton} ml-2`}
+                    disabled={!inputValue}
+                  >
+                    Add
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Form>
+          </Col>
+        </Row>
+        {addTasks}
+      </Container>
     );
   }
 }

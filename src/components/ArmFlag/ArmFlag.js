@@ -1,12 +1,15 @@
 import React from "react";
+import { Col, Row } from "react-bootstrap";
 
 const ArmFlag = () => {
   return (
-    <div className="mb-2">
-      <span role="img" aria-label="ArmenianFlag">
-        💖💙🧡
-      </span>
-    </div>
+    <Row className="mb-2">
+      <Col>
+        <span role="img" aria-label="ArmenianFlag">
+          💖💙🧡
+        </span>
+      </Col>
+    </Row>
   );
 };
 
