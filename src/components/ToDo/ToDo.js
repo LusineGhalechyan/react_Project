@@ -6,33 +6,29 @@ import {
   Col,
   Row,
   Container,
-  Form,
   InputGroup,
   FormControl,
   Button,
-  Card,
 } from "react-bootstrap";
 import ArmFlag from "../ArmFlag/ArmFlag";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 class ToDo extends Component {
   state = {
     tasks: [],
     inputValue: "",
+    selectedTasksIds: new Set(),
   };
 
   handleInputChange = (event) => {
     this.setState({ inputValue: event.target.value });
   };
 
-  // handleOnKeyDown = (event) => {
-  //   return event.key === "Enter" ? this.handleAddTask() : null;
-  // };
+  handleOnKeyDown = (event) => {
+    const { inputValue } = this.state;
+    return inputValue && event.key === "Enter" ? this.handleAddTask() : 0;
+  };
 
-  handleAddTask = (event) => {
-    event.preventDefault();
-
+  handleAddTask = () => {
     const { tasks, inputValue } = this.state;
 
     const newTask = {
@@ -54,32 +50,45 @@ class ToDo extends Component {
     });
   };
 
+  handleCheck = (taskId) => {
+    const { selectedTasksIds } = this.state;
+
+    const _selectedTasksIds = new Set(selectedTasksIds);
+
+    _selectedTasksIds.has(taskId)
+      ? _selectedTasksIds.delete(taskId)
+      : _selectedTasksIds.add(taskId);
+
+    this.setState({
+      selectedTasksIds: _selectedTasksIds,
+    });
+  };
+
+  removeSelectedTasks = () => {
+    let { tasks, selectedTasksIds } = this.state;
+
+    selectedTasksIds.forEach((id) => {
+      tasks = tasks.filter((t) => t._id !== id);
+    });
+
+    this.setState({
+      tasks,
+      selectedTasksIds: new Set(),
+    });
+  };
+
   render() {
-    const { tasks, inputValue } = this.state;
+    const { tasks, inputValue, selectedTasksIds } = this.state;
     const addTasks = (
       <Row>
         {tasks.map((task) => (
           <Col key={task._id} xs={12} md={4}>
-            <Card className="mb-3">
-              <Form.Group
-                controlId="formBasicCheckbox"
-                className={styles.checkBox}
-              >
-                <Form.Check type="checkbox" />
-              </Form.Group>
-              <Card.Body>
-                <Card.Title>{task.text.slice(0, 5) + "..."}</Card.Title>
-                <Card.Text>
-                  <Task task={task.text} />
-                </Card.Text>
-                <Button variant="warning" className={styles.buttonWarning}>
-                  <FontAwesomeIcon icon={faEdit} />
-                </Button>
-                <Button variant="danger" onClick={() => this.removeTask(task)}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </Button>
-              </Card.Body>
-            </Card>
+            <Task
+              task={task}
+              onRemove={this.removeTask}
+              onCheck={this.handleCheck}
+              disabled={selectedTasksIds.size}
+            />
           </Col>
         ))}
       </Row>
@@ -90,31 +99,41 @@ class ToDo extends Component {
         <Row className="justify-content-center">
           <ArmFlag />
           <Col xs={12} md={10} lg={8}>
-            <Form onSubmit={this.handleAddTask}>
-              <InputGroup className="mb-4">
-                <FormControl
-                  type="text"
-                  value={inputValue}
-                  aria-label="task's name"
-                  aria-describedby="data"
-                  placeholder="Type your task"
-                  onChange={this.handleInputChange}
-                  // onKeyDown={this.handleOnKeyDown}
-                />
-                <InputGroup.Append>
-                  <Button
-                    type="submit"
-                    className={`${styles.addTaskButton} ml-2`}
-                    disabled={!inputValue}
-                  >
-                    Add
-                  </Button>
-                </InputGroup.Append>
-              </InputGroup>
-            </Form>
+            <InputGroup className="mb-4">
+              <FormControl
+                type="text"
+                value={inputValue}
+                disabled={selectedTasksIds.size}
+                aria-label="task's name"
+                aria-describedby="data"
+                placeholder="Type your task"
+                onChange={this.handleInputChange}
+                onKeyDown={this.handleOnKeyDown}
+              />
+              <InputGroup.Append>
+                <Button
+                  type="submit"
+                  className={`${styles.addTaskButton} ml-2`}
+                  disabled={!inputValue}
+                >
+                  Add
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
           </Col>
         </Row>
         {addTasks}
+        <Row className="text-center">
+          <Col>
+            <Button
+              variant="danger"
+              onClick={this.removeSelectedTasks}
+              disabled={!selectedTasksIds.size}
+            >
+              Remove selected
+            </Button>
+          </Col>
+        </Row>
       </Container>
     );
   }
