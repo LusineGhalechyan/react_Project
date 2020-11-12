@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import idGenerator from "../../helpers/idGenerator";
 import Task from "../Task/Task";
 import styles from "./ToDo.module.scss";
@@ -12,13 +12,12 @@ import {
 } from "react-bootstrap";
 import ArmFlag from "../ArmFlag/ArmFlag";
 
-class ToDo extends Component {
+class ToDo extends PureComponent {
   state = {
     tasks: [],
     inputValue: "",
     selectedTasksIds: new Set(),
   };
-
   handleInputChange = (event) => {
     this.setState({ inputValue: event.target.value });
   };
@@ -76,6 +75,10 @@ class ToDo extends Component {
       selectedTasksIds: new Set(),
     });
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.inputValue.length + 1) return false;
+  }
 
   render() {
     const { tasks, inputValue, selectedTasksIds } = this.state;

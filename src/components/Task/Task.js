@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Card, Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Task.module.scss";
 
-class Task extends Component {
+class Task extends PureComponent {
   state = {
     selected: false,
     className: "",
@@ -22,6 +22,11 @@ class Task extends Component {
 
     onCheck(task._id);
   };
+
+  componentDidUpdate(prevProps) {
+    if (typeof prevProps === "object") return false;
+  }
+
   render() {
     const { task, disabled } = this.props;
     const { className } = this.state;
