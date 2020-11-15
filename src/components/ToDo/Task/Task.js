@@ -3,6 +3,7 @@ import { Card, Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Task.module.scss";
+import PropTypes from "prop-types";
 
 class Task extends PureComponent {
   state = {
@@ -28,8 +29,9 @@ class Task extends PureComponent {
   }
 
   render() {
-    const { task, disabled } = this.props;
+    const { task, disabled, onEdit } = this.props;
     const { className } = this.state;
+
     return (
       <Card className={`${styles[className]} mb-3`}>
         <Card.Body>
@@ -42,6 +44,7 @@ class Task extends PureComponent {
             variant="warning"
             className={styles.buttonWarning}
             disabled={disabled}
+            onClick={() => onEdit(task)}
           >
             <FontAwesomeIcon icon={faEdit} />
           </Button>
@@ -57,5 +60,12 @@ class Task extends PureComponent {
     );
   }
 }
+
+Task.propTypes = {
+  task: PropTypes.object.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  onCheck: PropTypes.func.isRequired,
+  disabled: PropTypes.number.isRequired,
+};
 
 export default Task;

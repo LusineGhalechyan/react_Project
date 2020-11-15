@@ -1,43 +1,22 @@
 import React, { PureComponent } from "react";
-import idGenerator from "../../helpers/idGenerator";
-import Task from "../Task/Task";
-import styles from "./ToDo.module.scss";
-import {
-  Col,
-  Row,
-  Container,
-  InputGroup,
-  FormControl,
-  Button,
-} from "react-bootstrap";
-import ArmFlag from "../ArmFlag/ArmFlag";
+import Task from "./Task/Task";
+import { Col, Row, Container, Button } from "react-bootstrap";
+import ArmFlag from "./ArmFlag/ArmFlag";
+import NewTasksInput from "./NewTasksInput/NewTasksInput";
+import Confirm from "./Confirm/Confirm";
+import EditTaskModal from "./EditTaskModal/EditTaskModal";
 
 class ToDo extends PureComponent {
   state = {
     tasks: [],
-    inputValue: "",
     selectedTasksIds: new Set(),
-  };
-  handleInputChange = (event) => {
-    this.setState({ inputValue: event.target.value });
-  };
-
-  handleOnKeyDown = (event) => {
-    const { inputValue } = this.state;
-    return inputValue && event.key === "Enter" ? this.handleAddTask() : 0;
+    showConfirm: false,
+    editTask: null,
   };
 
-  handleAddTask = () => {
-    const { tasks, inputValue } = this.state;
-
-    const newTask = {
-      text: inputValue,
-      _id: idGenerator(),
-    };
-
+  handleStateChangeFromChildToParent = (childStateTasks) => {
     this.setState({
-      tasks: [...tasks, newTask],
-      inputValue: "",
+      tasks: childStateTasks,
     });
   };
 
@@ -73,15 +52,22 @@ class ToDo extends PureComponent {
     this.setState({
       tasks,
       selectedTasksIds: new Set(),
+      showConfirm: false,
     });
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.inputValue.length + 1) return false;
-  }
+  toggleConfirm = () => {
+    this.setState({
+      showConfirm: !this.state.showConfirm,
+    });
+  };
+
+  toggleEditModal = (task) => {
+    this.setState({ editTask: task });
+  };
 
   render() {
-    const { tasks, inputValue, selectedTasksIds } = this.state;
+    const { tasks, selectedTasksIds, showConfirm, editTask } = this.state;
     const addTasks = (
       <Row>
         {tasks.map((task) => (
@@ -91,6 +77,7 @@ class ToDo extends PureComponent {
               onRemove={this.removeTask}
               onCheck={this.handleCheck}
               disabled={selectedTasksIds.size}
+              onEdit={this.toggleEditModal}
             />
           </Col>
         ))}
@@ -98,46 +85,48 @@ class ToDo extends PureComponent {
     );
 
     return (
-      <Container>
-        <Row className="justify-content-center">
-          <ArmFlag />
-          <Col xs={12} md={10} lg={8}>
-            <InputGroup className="mb-4">
-              <FormControl
-                type="text"
-                value={inputValue}
+      <>
+        <Container>
+          <Row className="justify-content-center">
+            <ArmFlag />
+            <Col xs={12} md={10} lg={8}>
+              <NewTasksInput
+                tasks={tasks}
+                onStateChange={this.handleStateChangeFromChildToParent}
                 disabled={selectedTasksIds.size}
-                aria-label="task's name"
-                aria-describedby="data"
-                placeholder="Type your task"
-                onChange={this.handleInputChange}
-                onKeyDown={this.handleOnKeyDown}
               />
-              <InputGroup.Append>
-                <Button
-                  type="submit"
-                  className={`${styles.addTaskButton} ml-2`}
-                  disabled={!inputValue}
-                >
-                  Add
-                </Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Col>
-        </Row>
-        {addTasks}
-        <Row className="text-center">
-          <Col>
-            <Button
-              variant="danger"
-              onClick={this.removeSelectedTasks}
-              disabled={!selectedTasksIds.size}
-            >
-              Remove selected
-            </Button>
-          </Col>
-        </Row>
-      </Container>
+            </Col>
+          </Row>
+          {addTasks}
+          <Row className="text-center">
+            <Col>
+              <Button
+                variant="danger"
+                onClick={this.toggleConfirm}
+                disabled={!selectedTasksIds.size}
+              >
+                Remove selected
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+        {showConfirm && (
+          <Confirm
+            removableTasksCount={selectedTasksIds.size}
+            onSubmit={this.removeSelectedTasks}
+            onClose={this.toggleConfirm}
+          />
+        )}
+        {!!editTask && (
+          <EditTaskModal
+            editTask={editTask}
+            onSave={(text) => {
+              console.log("text", text);
+            }}
+            onClose={() => this.toggleEditModal(null)}
+          />
+        )}
+      </>
     );
   }
 }
