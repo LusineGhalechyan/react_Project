@@ -5,6 +5,7 @@ import ArmFlag from "./ArmFlag/ArmFlag";
 import NewTasksInput from "./NewTasksInput/NewTasksInput";
 import Confirm from "./Confirm/Confirm";
 import EditTaskModal from "./EditTaskModal/EditTaskModal";
+import idGenerator from "../../helpers/idGenerator";
 
 class ToDo extends PureComponent {
   state = {
@@ -14,17 +15,15 @@ class ToDo extends PureComponent {
     editTask: null,
   };
 
-  handleStateChangeFromChildToParent = (childStateTasks) => {
-    this.setState({
-      tasks: childStateTasks,
-    });
-  };
+  handleAddTask = (inputValue) => {
+    const newTask = {
+      text: inputValue,
+      _id: idGenerator(),
+    };
 
-  removeTask = (task) => {
-    const { tasks } = this.state;
-    const filteredTasks = tasks.filter((t) => t._id !== task._id);
     this.setState({
-      tasks: filteredTasks,
+      tasks: [...this.state.tasks, newTask],
+      inputValue: "",
     });
   };
 
@@ -39,6 +38,14 @@ class ToDo extends PureComponent {
 
     this.setState({
       selectedTasksIds: _selectedTasksIds,
+    });
+  };
+
+  removeTask = (task) => {
+    const { tasks } = this.state;
+    const filteredTasks = tasks.filter((t) => t._id !== task._id);
+    this.setState({
+      tasks: filteredTasks,
     });
   };
 
@@ -68,6 +75,7 @@ class ToDo extends PureComponent {
 
   render() {
     const { tasks, selectedTasksIds, showConfirm, editTask } = this.state;
+
     const addTasks = (
       <Row>
         {tasks.map((task) => (
@@ -91,8 +99,7 @@ class ToDo extends PureComponent {
             <ArmFlag />
             <Col xs={12} md={10} lg={8}>
               <NewTasksInput
-                tasks={tasks}
-                onStateChange={this.handleStateChangeFromChildToParent}
+                onAddTask={this.handleAddTask}
                 disabled={selectedTasksIds.size}
               />
             </Col>

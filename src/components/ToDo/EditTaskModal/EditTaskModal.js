@@ -3,9 +3,12 @@ import { Modal, Button, FormControl } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 class EditTaskModal extends PureComponent {
-  state = {
-    ...this.props.editTask,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      ...props.editTask,
+    };
+  }
 
   handleChange = (event) => {
     this.setState({ text: event.target.value });

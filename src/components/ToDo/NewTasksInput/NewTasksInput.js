@@ -1,12 +1,10 @@
 import React, { PureComponent } from "react";
 import styles from "./NewTasksInput.module.scss";
-import idGenerator from "../../../helpers/idGenerator";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 class NewTasksInput extends PureComponent {
   state = {
-    tasks: this.props.tasks,
     inputValue: "",
   };
 
@@ -20,25 +18,12 @@ class NewTasksInput extends PureComponent {
   };
 
   handleAddTask = () => {
-    const { tasks, inputValue } = this.state;
-    const { onStateChange } = this.props;
+    const { inputValue } = this.state;
+    const { onAddTask } = this.props;
 
     if (!inputValue) return false;
 
-    const newTask = {
-      text: inputValue,
-      _id: idGenerator(),
-    };
-
-    this.setState(
-      {
-        tasks: [...tasks, newTask],
-        inputValue: "",
-      },
-      () => {
-        onStateChange(this.state.tasks);
-      }
-    );
+    onAddTask(inputValue);
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -77,9 +62,8 @@ class NewTasksInput extends PureComponent {
 }
 
 NewTasksInput.propTypes = {
-  tasks: PropTypes.array.isRequired,
   disabled: PropTypes.number,
-  onStateChange: PropTypes.func.isRequired,
+  onAddTask: PropTypes.func.isRequired,
 };
 
 export default NewTasksInput;
