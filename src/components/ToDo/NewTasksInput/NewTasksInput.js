@@ -24,6 +24,8 @@ class NewTasksInput extends PureComponent {
     if (!inputValue) return false;
 
     onAddTask(inputValue);
+    
+    this.setState({ inputValue: "" });
   };
 
   componentDidUpdate(prevProps, prevState) {
