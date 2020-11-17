@@ -23,7 +23,6 @@ class ToDo extends PureComponent {
 
     this.setState({
       tasks: [...this.state.tasks, newTask],
-      inputValue: "",
     });
   };
 
@@ -73,6 +72,18 @@ class ToDo extends PureComponent {
     this.setState({ editTask: task });
   };
 
+  saveTask = (editedTask) => {
+    const tasks = [...this.state.tasks];
+    const isElementExists = (task) => task._id === editedTask._id;
+    const getTasktIndex = tasks.findIndex(isElementExists);
+    tasks[getTasktIndex] = editedTask;
+
+    this.setState({
+      tasks,
+      editTask: null,
+    });
+  };
+
   render() {
     const { tasks, selectedTasksIds, showConfirm, editTask } = this.state;
 
@@ -84,8 +95,8 @@ class ToDo extends PureComponent {
               task={task}
               onRemove={this.removeTask}
               onCheck={this.handleCheck}
-              disabled={selectedTasksIds.size}
               onEdit={this.toggleEditModal}
+              disabled={selectedTasksIds.size}
             />
           </Col>
         ))}
@@ -94,9 +105,9 @@ class ToDo extends PureComponent {
 
     return (
       <>
+        <ArmFlag />
         <Container>
           <Row className="justify-content-center">
-            <ArmFlag />
             <Col xs={12} md={10} lg={8}>
               <NewTasksInput
                 onAddTask={this.handleAddTask}
@@ -127,9 +138,7 @@ class ToDo extends PureComponent {
         {!!editTask && (
           <EditTaskModal
             editTask={editTask}
-            onSave={(text) => {
-              console.log("text", text);
-            }}
+            onSave={this.saveTask}
             onClose={() => this.toggleEditModal(null)}
           />
         )}

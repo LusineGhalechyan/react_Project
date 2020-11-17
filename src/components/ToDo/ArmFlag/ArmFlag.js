@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 
 const ArmFlag = () => {
   return (
-    <Row className="mb-2">
+    <Row className="text-center mb-2">
       <Col>
         <span role="img" aria-label="ArmenianFlag">
           💖💙🧡

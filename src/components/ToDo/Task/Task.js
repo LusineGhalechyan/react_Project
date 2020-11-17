@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 
 class Task extends PureComponent {
   state = {
+    isSelected: this.props.isSelected,
     selected: false,
     className: "",
   };
@@ -42,16 +43,17 @@ class Task extends PureComponent {
           <Card.Text>{task.text}</Card.Text>
           <Button
             variant="warning"
-            className={styles.buttonWarning}
             disabled={disabled}
             onClick={() => onEdit(task)}
+            className={styles.buttonWarning}
           >
             <FontAwesomeIcon icon={faEdit} />
           </Button>
           <Button
             variant="danger"
-            onClick={() => this.props.onRemove(task)}
             disabled={disabled}
+            onClick={() => this.props.onRemove(task)}
+            className={styles.buttonDanger}
           >
             <FontAwesomeIcon icon={faTrash} />
           </Button>
