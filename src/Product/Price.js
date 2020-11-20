@@ -6,16 +6,18 @@ class Price extends Component {
 
     this.state = {
       price: props.price,
-      usd: props.usd,
+      // amd: props.amd,
     };
   }
 
   handleStatePriceChange = () => {
-    let { price, usd } = this.state;
+    let { price } = this.state;
+    let { amd } = this.props;
+    amd = amd.toFixed(2);
 
     price.includes("$")
-      ? (price = `${parseFloat(price) * usd}֏`)
-      : (price = `${parseFloat(price) / usd}$`);
+      ? (price = `${parseFloat(price) * amd}֏`)
+      : (price = `${parseFloat(price) / amd}$`);
 
     this.setState({ price });
   };
