@@ -5,7 +5,9 @@ import ArmFlag from "./ArmFlag/ArmFlag";
 import NewTasksInput from "./NewTasksInput/NewTasksInput";
 import Confirm from "./Confirm/Confirm";
 import EditTaskModal from "./EditTaskModal/EditTaskModal";
-import idGenerator from "../../helpers/idGenerator";
+import axios from "axios";
+import { backendUrl } from "../../helpers/backendUrl";
+// import idGenerator from "../../helpers/idGenerator";
 
 class ToDo extends PureComponent {
   state = {
@@ -15,15 +17,27 @@ class ToDo extends PureComponent {
     editTask: null,
   };
 
-  handleAddTask = (inputValue) => {
-    const newTask = {
-      text: inputValue,
-      _id: idGenerator(),
+  handleAddTask = (newTask) => {
+    const body = JSON.stringify(newTask);
+
+    const newTaskPostBody = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
     };
 
-    this.setState({
-      tasks: [...this.state.tasks, newTask],
-    });
+    const sendPostRequest = async () => {
+      const response = await axios(`${backendUrl}${"/task"}`, newTaskPostBody);
+      console.log(response);
+    };
+
+    // this.setState({
+    //   tasks: [...this.state.tasks, response.data],
+    // });
+
+    sendPostRequest();
   };
 
   handleCheck = (taskId) => {
@@ -86,7 +100,7 @@ class ToDo extends PureComponent {
 
   render() {
     const { tasks, selectedTasksIds, showConfirm, editTask } = this.state;
-
+    // console.log("tasks", tasks)
     const addTasks = (
       <Row>
         {tasks.map((task) => (

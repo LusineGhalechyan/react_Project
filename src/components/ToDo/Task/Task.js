@@ -25,13 +25,14 @@ class Task extends PureComponent {
     onCheck(task._id);
   };
 
-  componentDidUpdate(prevProps) {
-    if (typeof prevProps === "object") return false;
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (typeof prevProps === "object") return false;
+  // }
 
   render() {
     const { task, disabled, onEdit } = this.props;
     const { className } = this.state;
+    // console.log("task", task)
 
     return (
       <Card className={`${styles[className]} mb-3`}>
@@ -39,7 +40,7 @@ class Task extends PureComponent {
           <Form.Group controlId="formBasicCheckbox">
             <Form.Check type="checkbox" onClick={this.handleCheck} />
           </Form.Group>
-          <Card.Title>{task.text.slice(0, 5) + "..."}</Card.Title>
+          <Card.Title>{task.title.slice(0, 5) + "..."}</Card.Title>
           <Card.Text>{task.text}</Card.Text>
           <Button
             variant="warning"
