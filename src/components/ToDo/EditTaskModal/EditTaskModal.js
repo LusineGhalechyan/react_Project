@@ -11,22 +11,21 @@ class EditTaskModal extends PureComponent {
   }
 
   handleChange = (event) => {
-    this.setState({ text: event.target.value });
+    this.setState({ title: event.target.value });
   };
 
   handleSave = () => {
-    const { text } = this.state;
+    const { title } = this.state;
     const { onSave } = this.props;
 
-    if (!text) return;
+    if (!title) return;
 
     onSave(this.state);
   };
 
   render() {
     const { props } = this;
-    const { text } = this.state;
-
+    const { title } = this.state;
     return (
       <Modal show onHide={props.onClose} centered>
         <Modal.Header closeButton className="close-modal">
@@ -35,7 +34,7 @@ class EditTaskModal extends PureComponent {
         <Modal.Body>
           <FormControl
             type="text"
-            value={text}
+            value={title}
             onChange={this.handleChange}
             aria-label="task's name"
             aria-describedby="data"
