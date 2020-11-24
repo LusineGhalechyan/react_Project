@@ -60,7 +60,7 @@ class ToDo extends PureComponent {
     axios
       .delete(`${backendUrl}${"/task/"}${task._id}`)
       .then((response) => console.log(response.data))
-      .catch((error) => console.log(console.log(error)));
+      .catch((error) => console.log(error);
 
     const filteredTasks = tasks.filter((t) => t._id !== task._id);
     this.setState({
@@ -78,7 +78,7 @@ class ToDo extends PureComponent {
     axios
       .patch(`${backendUrl}${"/task/"}`, axiosPatchRequestValue)
       .then((response) => console.log(response.data))
-      .catch((error) => console.log(console.log(error)));
+      .catch((error) => console.log(error);
 
     selectedTasksIds.forEach((id) => {
       tasks = tasks.filter((t) => t._id !== id);
@@ -115,7 +115,7 @@ class ToDo extends PureComponent {
           editTask: null,
         });
       })
-      .catch((error) => console.log(console.log(error)));
+      .catch((error) => console.log(error);
   };
 
   render() {
