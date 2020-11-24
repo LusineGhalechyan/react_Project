@@ -7,7 +7,6 @@ import Confirm from "./Confirm/Confirm";
 import EditTaskModal from "./EditTaskModal/EditTaskModal";
 import axios from "axios";
 import { backendUrl } from "../../helpers/backendUrl";
-// import idGenerator from "../../helpers/idGenerator";
 
 class ToDo extends PureComponent {
   state = {
@@ -17,27 +16,28 @@ class ToDo extends PureComponent {
     editTask: null,
   };
 
+  async componentDidMount() {
+    try {
+      const response = await axios.get(`${backendUrl}${"/task"}`);
+      if (!response.data.length)
+        throw new Error("There is no any task in DataBase");
+      this.setState({
+        tasks: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   handleAddTask = (newTask) => {
-    const body = JSON.stringify(newTask);
-
-    const newTaskPostBody = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    };
-
-    const sendPostRequest = async () => {
-      const response = await axios(`${backendUrl}${"/task"}`, newTaskPostBody);
-      console.log(response);
-    };
-
-    // this.setState({
-    //   tasks: [...this.state.tasks, response.data],
-    // });
-
-    sendPostRequest();
+    axios
+      .post(`${backendUrl}${"/task"}`, newTask)
+      .then((response) => {
+        this.setState({
+          tasks: [...this.state.tasks, response.data],
+        });
+      })
+      .catch((error) => console.log(error, "Failed to fetch data"));
   };
 
   handleCheck = (taskId) => {
@@ -56,6 +56,12 @@ class ToDo extends PureComponent {
 
   removeTask = (task) => {
     const { tasks } = this.state;
+
+    axios
+      .delete(`${backendUrl}${"/task/"}${task._id}`)
+      .then((response) => console.log(response.data))
+      .catch((error) => console.log(console.log(error)));
+
     const filteredTasks = tasks.filter((t) => t._id !== task._id);
     this.setState({
       tasks: filteredTasks,
@@ -63,7 +69,16 @@ class ToDo extends PureComponent {
   };
 
   removeSelectedTasks = () => {
-    let { tasks, selectedTasksIds } = this.state;
+    let { selectedTasksIds } = this.state;
+    let tasks = [...this.state.tasks];
+
+    const axiosPatchRequestValue = {
+      tasks: [...selectedTasksIds],
+    };
+    axios
+      .patch(`${backendUrl}${"/task/"}`, axiosPatchRequestValue)
+      .then((response) => console.log(response.data))
+      .catch((error) => console.log(console.log(error)));
 
     selectedTasksIds.forEach((id) => {
       tasks = tasks.filter((t) => t._id !== id);
@@ -87,20 +102,25 @@ class ToDo extends PureComponent {
   };
 
   saveTask = (editedTask) => {
-    const tasks = [...this.state.tasks];
-    const isElementExists = (task) => task._id === editedTask._id;
-    const getTasktIndex = tasks.findIndex(isElementExists);
-    tasks[getTasktIndex] = editedTask;
+    axios
+      .put(`${backendUrl}${"/task/"}${editedTask._id}`, editedTask)
+      .then((response) => {
+        const tasks = [...this.state.tasks];
+        const isElementExists = (task) => task._id === editedTask._id;
+        const getTasktIndex = tasks.findIndex(isElementExists);
+        tasks[getTasktIndex] = response.data;
 
-    this.setState({
-      tasks,
-      editTask: null,
-    });
+        this.setState({
+          tasks,
+          editTask: null,
+        });
+      })
+      .catch((error) => console.log(console.log(error)));
   };
 
   render() {
     const { tasks, selectedTasksIds, showConfirm, editTask } = this.state;
-    // console.log("tasks", tasks)
+
     const addTasks = (
       <Row>
         {tasks.map((task) => (
