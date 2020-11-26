@@ -1,75 +1,98 @@
 import React, { PureComponent } from "react";
-import styles from "./NewTasksInput.module.scss";
-import { InputGroup, FormControl, Button } from "react-bootstrap";
+import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 class NewTasksInput extends PureComponent {
   state = {
-    inputValue: "",
+    title: "",
+    description: "",
+    date: new Date(),
   };
 
-  handleInputChange = (event) => {
-    this.setState({ inputValue: event.target.value });
+  handleChange = (event) => {
+    const { name, value } = event.target;
+
+    this.setState({
+      [name]: value,
+    });
   };
 
   handleOnKeyDown = (event) => {
-    const { inputValue } = this.state;
-    return inputValue && event.key === "Enter" ? this.handleAddTask() : 0;
+    const { title } = this.state;
+    return title && event.key === "Enter" ? this.handleAddTask() : 0;
   };
 
   handleAddTask = () => {
-    const { inputValue } = this.state;
+    const { title, description } = this.state;
     const { onAddTask } = this.props;
 
-    if (!inputValue) return false;
+    if (!title) return false;
 
     const newTask = {
-      title: inputValue,
+      title,
+      description,
     };
-    
-    onAddTask(newTask);
 
-    this.setState({ inputValue: "" });
+    onAddTask(newTask);
   };
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.inputValue.length + 1) return false;
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.title.length + 1) return false;
+  }
 
   render() {
-    const { inputValue } = this.state;
-    const { disabled } = this.props;
+    const { onClose } = this.props;
+    const addTaskModalContent = (
+      <>
+        <InputGroup className="mb-4">
+          <FormControl
+            type="text"
+            name="title"
+            value={this.state.value}
+            placeholder="Title"
+            onChange={this.handleChange}
+            onKeyDown={this.handleOnKeyDown}
+          />
+        </InputGroup>
+        <Form.Group controlId="exampleForm.ControlTextarea">
+          <Form.Label>Task Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            name="description"
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="dob">
+          <Form.Label>Select Date</Form.Label>
+          <Form.Control type="date" name="date" onChange={this.handleChange} />
+        </Form.Group>
+      </>
+    );
 
     return (
-      <InputGroup className="mb-4">
-        <FormControl
-          type="text"
-          value={inputValue}
-          disabled={disabled}
-          onChange={this.handleInputChange}
-          onKeyDown={this.handleOnKeyDown}
-          aria-label="task's name"
-          aria-describedby="data"
-          placeholder="Type your task"
-        />
-        <InputGroup.Append>
-          <Button
-            type="submit"
-            className={`${styles.addTaskButton} ml-2`}
-            disabled={disabled}
-            onClick={this.handleAddTask}
-          >
+      <Modal show onHide={onClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Add new task</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{addTaskModalContent}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" type="submit" onClick={this.handleAddTask}>
             Add
           </Button>
-        </InputGroup.Append>
-      </InputGroup>
+          <Button variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
 
 NewTasksInput.propTypes = {
-  disabled: PropTypes.number,
   onAddTask: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default NewTasksInput;

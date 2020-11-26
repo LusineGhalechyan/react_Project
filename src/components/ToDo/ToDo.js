@@ -5,6 +5,7 @@ import ArmFlag from "./ArmFlag/ArmFlag";
 import NewTasksInput from "./NewTasksInput/NewTasksInput";
 import Confirm from "./Confirm/Confirm";
 import EditTaskModal from "./EditTaskModal/EditTaskModal";
+import styles from "./NewTasksInput/NewTasksInput.module.scss";
 import axios from "axios";
 import { backendUrl } from "../../helpers/backendUrl";
 
@@ -14,6 +15,7 @@ class ToDo extends PureComponent {
     selectedTasksIds: new Set(),
     showConfirm: false,
     editTask: null,
+    openNewTaskModal: false,
   };
 
   async componentDidMount() {
@@ -35,6 +37,7 @@ class ToDo extends PureComponent {
       .then((response) => {
         this.setState({
           tasks: [...this.state.tasks, response.data],
+          openNewTaskModal: false,
         });
       })
       .catch((error) => console.log(error, "Failed to fetch data"));
@@ -60,7 +63,7 @@ class ToDo extends PureComponent {
     axios
       .delete(`${backendUrl}${"/task/"}${task._id}`)
       .then((response) => console.log(response.data))
-      .catch((error) => console.log(console.log(error)));
+      .catch((error) => console.log(error));
 
     const filteredTasks = tasks.filter((t) => t._id !== task._id);
     this.setState({
@@ -78,10 +81,10 @@ class ToDo extends PureComponent {
     axios
       .patch(`${backendUrl}${"/task/"}`, axiosPatchRequestValue)
       .then((response) => console.log(response.data))
-      .catch((error) => console.log(console.log(error)));
+      .catch((error) => console.log(error));
 
-    selectedTasksIds.forEach((id) => {
-      tasks = tasks.filter((t) => t._id !== id);
+    selectedTasksIds.forEach((_id) => {
+      tasks = tasks.filter((t) => t._id !== _id);
     });
 
     this.setState({
@@ -115,11 +118,23 @@ class ToDo extends PureComponent {
           editTask: null,
         });
       })
-      .catch((error) => console.log(console.log(error)));
+      .catch((error) => console.log(error));
+  };
+
+  toggleNewTaskModal = () => {
+    this.setState({
+      openNewTaskModal: !this.state.openNewTaskModal,
+    });
   };
 
   render() {
-    const { tasks, selectedTasksIds, showConfirm, editTask } = this.state;
+    const {
+      tasks,
+      selectedTasksIds,
+      showConfirm,
+      editTask,
+      openNewTaskModal,
+    } = this.state;
 
     const addTasks = (
       <Row>
@@ -141,12 +156,15 @@ class ToDo extends PureComponent {
       <>
         <ArmFlag />
         <Container>
-          <Row className="justify-content-center">
+          <Row className="justify-content-center text-center">
             <Col xs={12} md={10} lg={8}>
-              <NewTasksInput
-                onAddTask={this.handleAddTask}
+              <Button
+                className={`${styles.addTaskButton} mb-3`}
+                onClick={this.toggleNewTaskModal}
                 disabled={selectedTasksIds.size}
-              />
+              >
+                Add new task
+              </Button>
             </Col>
           </Row>
           {addTasks}
@@ -174,6 +192,12 @@ class ToDo extends PureComponent {
             editTask={editTask}
             onSave={this.saveTask}
             onClose={() => this.toggleEditModal(null)}
+          />
+        )}
+        {openNewTaskModal && (
+          <NewTasksInput
+            onAddTask={this.handleAddTask}
+            onClose={this.toggleNewTaskModal}
           />
         )}
       </>
