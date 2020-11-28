@@ -1,12 +1,13 @@
 import React, { PureComponent } from "react";
 import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
+import { jsDateformatter } from "../../../helpers/jsDateFormatter";
 
 class NewTasksInput extends PureComponent {
   state = {
     title: "",
     description: "",
-    date: new Date(),
+    date: jsDateformatter(),
   };
 
   handleChange = (event) => {
@@ -23,7 +24,7 @@ class NewTasksInput extends PureComponent {
   };
 
   handleAddTask = () => {
-    const { title, description } = this.state;
+    const { title, description, date } = this.state;
     const { onAddTask } = this.props;
 
     if (!title) return false;
@@ -31,6 +32,7 @@ class NewTasksInput extends PureComponent {
     const newTask = {
       title,
       description,
+      date,
     };
 
     onAddTask(newTask);

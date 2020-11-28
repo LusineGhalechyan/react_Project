@@ -21,8 +21,6 @@ class ToDo extends PureComponent {
   async componentDidMount() {
     try {
       const response = await axios.get(`${backendUrl}${"/task"}`);
-      if (!response.data.length)
-        throw new Error("There is no any task in DataBase");
       this.setState({
         tasks: response.data,
       });
@@ -35,6 +33,7 @@ class ToDo extends PureComponent {
     axios
       .post(`${backendUrl}${"/task"}`, newTask)
       .then((response) => {
+        // console.log("response", response)
         this.setState({
           tasks: [...this.state.tasks, response.data],
           openNewTaskModal: false,
@@ -62,13 +61,15 @@ class ToDo extends PureComponent {
 
     axios
       .delete(`${backendUrl}${"/task/"}${task._id}`)
-      .then((response) => console.log(response.data))
-      .catch((error) => console.log(error));
+      .then((response) => {
+        console.log(response.data);
+        const filteredTasks = tasks.filter((t) => t._id !== task._id);
 
-    const filteredTasks = tasks.filter((t) => t._id !== task._id);
-    this.setState({
-      tasks: filteredTasks,
-    });
+        this.setState({
+          tasks: filteredTasks,
+        });
+      })
+      .catch((error) => console.log(error));
   };
 
   removeSelectedTasks = () => {
@@ -80,18 +81,19 @@ class ToDo extends PureComponent {
     };
     axios
       .patch(`${backendUrl}${"/task/"}`, axiosPatchRequestValue)
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        console.log(response.data);
+        selectedTasksIds.forEach((_id) => {
+          tasks = tasks.filter((t) => t._id !== _id);
+        });
+
+        this.setState({
+          tasks,
+          selectedTasksIds: new Set(),
+          showConfirm: false,
+        });
+      })
       .catch((error) => console.log(error));
-
-    selectedTasksIds.forEach((_id) => {
-      tasks = tasks.filter((t) => t._id !== _id);
-    });
-
-    this.setState({
-      tasks,
-      selectedTasksIds: new Set(),
-      showConfirm: false,
-    });
   };
 
   toggleConfirm = () => {
