@@ -1,4 +1,4 @@
-export function jsDateformatter() {
+export const jsDateformatter = () => {
   const date = new Date();
 
   const day = ("0" + date.getDate()).slice(-2);
@@ -6,4 +6,6 @@ export function jsDateformatter() {
   const year = date.getFullYear();
 
   return `${year}-${month}-${day}`;
-}
+};
+
+export const formatDate = (str = "") => str.slice(0, 10);

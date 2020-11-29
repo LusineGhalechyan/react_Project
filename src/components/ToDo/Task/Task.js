@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Task.module.scss";
 import PropTypes from "prop-types";
+import { formatDate } from "../../../helpers/utils";
 
 class Task extends PureComponent {
   state = {
@@ -40,7 +41,13 @@ class Task extends PureComponent {
             <Form.Check type="checkbox" onClick={this.handleCheck} />
           </Form.Group>
           <Card.Title>{task.title.slice(0, 5) + "..."}</Card.Title>
-          <Card.Text>{task.description}</Card.Text>
+          <Card.Text>Description: {task.description}</Card.Text>
+          <Card.Text className={styles.cardTextDate}>
+            Date: {formatDate(task.date)}
+          </Card.Text>
+          <Card.Text className={styles.cardTextDate}>
+            Created_at: {formatDate(task.created_at)}
+          </Card.Text>
           <Button
             variant="warning"
             disabled={disabled}

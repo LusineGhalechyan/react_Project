@@ -29,9 +29,9 @@ class ToDo extends PureComponent {
     }
   }
 
-  handleAddTask = (newTask) => {
+  handleAddTask = (newTaskToBackend) => {
     axios
-      .post(`${backendUrl}${"/task"}`, newTask)
+      .post(`${backendUrl}${"/task"}`, newTaskToBackend)
       .then((response) => {
         // console.log("response", response)
         this.setState({

@@ -1,13 +1,14 @@
 import React, { PureComponent } from "react";
 import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { jsDateformatter } from "../../../helpers/jsDateFormatter";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class NewTasksInput extends PureComponent {
   state = {
     title: "",
     description: "",
-    date: jsDateformatter(),
+    date: new Date(),
   };
 
   handleChange = (event) => {
@@ -15,6 +16,12 @@ class NewTasksInput extends PureComponent {
 
     this.setState({
       [name]: value,
+    });
+  };
+
+  handleDateChange = (date) => {
+    this.setState({
+      date,
     });
   };
 
@@ -29,13 +36,13 @@ class NewTasksInput extends PureComponent {
 
     if (!title) return false;
 
-    const newTask = {
+    const newTaskToBackend = {
       title,
       description,
-      date,
+      date: date.toISOString().slice(0, 10),
     };
 
-    onAddTask(newTask);
+    onAddTask(newTaskToBackend);
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -44,6 +51,7 @@ class NewTasksInput extends PureComponent {
 
   render() {
     const { onClose } = this.props;
+    const { date } = this.state;
     const addTaskModalContent = (
       <>
         <InputGroup className="mb-4">
@@ -59,17 +67,17 @@ class NewTasksInput extends PureComponent {
         <Form.Group controlId="exampleForm.ControlTextarea">
           <Form.Label>Task Description</Form.Label>
           <Form.Control
-            as="textarea"
             rows={3}
+            as="textarea"
             name="description"
             onChange={this.handleChange}
           />
         </Form.Group>
-
-        <Form.Group controlId="dob">
-          <Form.Label>Select Date</Form.Label>
-          <Form.Control type="date" name="date" onChange={this.handleChange} />
-        </Form.Group>
+        <DatePicker
+          selected={date}
+          onChange={this.handleDateChange}
+          minDate={new Date()}
+        />
       </>
     );
 

@@ -1,51 +1,91 @@
 import React, { PureComponent } from "react";
-import { Modal, Button, FormControl } from "react-bootstrap";
+import { Modal, Button, Form, FormControl, InputGroup } from "react-bootstrap";
 import PropTypes from "prop-types";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class EditTaskModal extends PureComponent {
   constructor(props) {
     super(props);
+    const { date } = props.editTask;
     this.state = {
       ...props.editTask,
+      date: date ? new Date(date) : new Date(),
     };
   }
 
   handleChange = (event) => {
-    this.setState({ title: event.target.value });
+    const { name, value } = event.target;
+
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  handleDateChange = (date) => {
+    this.setState({
+      date,
+    });
   };
 
   handleSave = () => {
-    const { title } = this.state;
+    const { title, date } = this.state;
     const { onSave } = this.props;
 
     if (!title) return;
 
-    onSave(this.state);
+    const editedTasktoBackend = {
+      ...this.state,
+      date: date.toISOString().slice(0, 10),
+    };
+
+    onSave(editedTasktoBackend);
   };
 
   render() {
-    const { props } = this;
-    const { title } = this.state;
-    return (
-      <Modal show onHide={props.onClose} centered>
-        <Modal.Header closeButton className="close-modal">
-          <Modal.Title>Edit task</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+    const { onClose } = this.props;
+    const { title, description, date } = this.state;
+    const editTaskModalContent = (
+      <>
+        <InputGroup className="mb-4">
           <FormControl
             type="text"
+            name="title"
             value={title}
+            placeholder="Title"
             onChange={this.handleChange}
-            aria-label="task's name"
-            aria-describedby="data"
-            placeholder="Type your task"
+            onKeyDown={this.handleOnKeyDown}
           />
-        </Modal.Body>
+        </InputGroup>
+        <Form.Group controlId="exampleForm.ControlTextarea">
+          <Form.Label>Task Description</Form.Label>
+          <Form.Control
+            rows={3}
+            as="textarea"
+            name="description"
+            value={description}
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+        <DatePicker
+          selected={date}
+          onChange={this.handleDateChange}
+          minDate={new Date()}
+        />
+      </>
+    );
+
+    return (
+      <Modal show onHide={onClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit task</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{editTaskModalContent}</Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={this.handleSave}>
+          <Button variant="primary" type="submit" onClick={this.handleSave}>
             Save
           </Button>
-          <Button variant="secondary" onClick={props.onClose}>
+          <Button variant="secondary" onClick={onClose}>
             Cancel
           </Button>
         </Modal.Footer>
