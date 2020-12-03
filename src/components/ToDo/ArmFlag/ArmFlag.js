@@ -1,15 +1,13 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+import styles from "./ArmFlag.module.scss";
 
 const ArmFlag = () => {
   return (
-    <Row className="text-center mb-2">
-      <Col>
-        <span role="img" aria-label="ArmenianFlag">
-          💖💙🧡
-        </span>
-      </Col>
-    </Row>
+    <div className={styles.armFlag}>
+      <span role="img" aria-label="ArmenianFlag">
+        💖💙🧡
+      </span>
+    </div>
   );
 };
 

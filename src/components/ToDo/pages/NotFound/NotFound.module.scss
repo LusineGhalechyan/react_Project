@@ -1,0 +1,42 @@
+.Space {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.error404 {
+  margin-top: 140px;
+  text-align: center;
+  transform: translateX(0px);
+  animation: jump 3.3s ease-out;
+
+  @keyframes jump {
+    0% {
+      transform: translateY(-700px);
+    }
+  }
+}
+
+.error {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  margin-top: -90px;
+  transform: scale(0.8);
+  animation: ripple 3s linear;
+
+  @keyframes ripple {
+    to {
+      transform: scale(1.1);
+      opacity: 0.5;
+    }
+  }
+}

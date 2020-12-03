@@ -1,13 +1,14 @@
 import React, { PureComponent } from "react";
-import Task from "./Task/Task";
+import Task from "../Task/Task";
 import { Col, Row, Container, Button } from "react-bootstrap";
-import ArmFlag from "./ArmFlag/ArmFlag";
-import NewTasksInput from "./NewTasksInput/NewTasksInput";
-import Confirm from "./Confirm/Confirm";
-import EditTaskModal from "./EditTaskModal/EditTaskModal";
-import styles from "./NewTasksInput/NewTasksInput.module.scss";
+import ArmFlag from "../ArmFlag/ArmFlag";
+import NewTasksInput from "../NewTasksInput/NewTasksInput";
+import Confirm from "../Confirm/Confirm";
+import EditTaskModal from "../EditTaskModal/EditTaskModal";
+import styles from "../NewTasksInput/NewTasksInput.module.scss";
 import axios from "axios";
-import { backendUrl } from "../../helpers/backendUrl";
+import { backendUrl } from "../../../helpers/backendUrl";
+import ToDoImg from "../ToDoImg/ToDoImg";
 
 class ToDo extends PureComponent {
   state = {
@@ -33,7 +34,6 @@ class ToDo extends PureComponent {
     axios
       .post(`${backendUrl}${"/task"}`, newTaskToBackend)
       .then((response) => {
-        // console.log("response", response)
         this.setState({
           tasks: [...this.state.tasks, response.data],
           openNewTaskModal: false,
@@ -156,6 +156,7 @@ class ToDo extends PureComponent {
 
     return (
       <>
+        <ToDoImg />
         <ArmFlag />
         <Container>
           <Row className="justify-content-center text-center">
@@ -170,7 +171,7 @@ class ToDo extends PureComponent {
             </Col>
           </Row>
           {addTasks}
-          <Row className="text-center">
+          <Row className="text-center mb-4">
             <Col>
               <Button
                 variant="danger"
