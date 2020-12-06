@@ -1,3 +1,26 @@
-.task {
-  margin: 50px 30px;
+.singleTaskCardRow {
+  text-align: center;
+
+  .singleTaskCardContainer {
+    padding: 25px;
+    text-align: left;
+    margin: 80px auto;
+  }
+  .singleTaskCardTitle {
+    color: #007bff;
+  }
+
+  .singleTaskCardText {
+    color: #52527a;
+  }
+  .singleTaskCardButtonWarning {
+    margin: 10px;
+    color: #fff;
+  }
+
+  @media (min-width: 480px) {
+    .singleTaskCardContainer {
+      width: 50%;
+    }
+  }
 }
