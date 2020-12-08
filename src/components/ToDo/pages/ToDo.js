@@ -139,7 +139,7 @@ class ToDo extends PureComponent {
     } = this.state;
 
     const addTasks = (
-      <Row>
+      <Row className="mb-4">
         {tasks.map((task) => (
           <Col key={task._id} xs={12} md={4}>
             <Task
@@ -170,8 +170,7 @@ class ToDo extends PureComponent {
               </Button>
             </Col>
           </Row>
-          {addTasks}
-          <Row className="text-center mb-4">
+          <Row className="text-center mb-3">
             <Col>
               <Button
                 variant="danger"
@@ -182,6 +181,7 @@ class ToDo extends PureComponent {
               </Button>
             </Col>
           </Row>
+          {addTasks}
         </Container>
         {showConfirm && (
           <Confirm

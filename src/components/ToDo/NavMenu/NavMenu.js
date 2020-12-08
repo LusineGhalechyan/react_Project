@@ -1,11 +1,18 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 import styles from "./NavMenu.module.scss";
 
 const NavMenu = () => {
   return (
-    <Navbar bg="light" expand="lg" fixed="top">
+    <Navbar
+      bg="light"
+      expand="lg"
+      fixed="top"
+      className={styles.navBarContainer}
+    >
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
@@ -15,7 +22,7 @@ const NavMenu = () => {
             className={styles.navLink}
             activeClassName={styles.activePage}
           >
-            Home
+            <FontAwesomeIcon icon={faHome} />
           </NavLink>
           <NavLink
             to="/about"

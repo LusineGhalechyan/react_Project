@@ -7,12 +7,12 @@ import { backendUrl } from "../../../../helpers/backendUrl";
 import styles from "./SingleTask.module.scss";
 import { formatDate } from "../../../../helpers/utils";
 import Spinner from "../../Spinner/Spinner";
-// import EditTaskModal from "../../EditTaskModal/EditTaskModal";
+import EditTaskModal from "../../EditTaskModal/EditTaskModal";
 
 class SingleTask extends PureComponent {
   state = {
     task: null,
-    // editATask: !!null,
+    editATask: !!null,
   };
 
   async componentDidMount() {
@@ -37,13 +37,25 @@ class SingleTask extends PureComponent {
       .catch((error) => console.log(error));
   };
 
-  // toggleEditModal = () => {
-  //   const { editATask } = this.state;
-  //   this.setState({ editATask: !editATask });
-  // };
+  toggleEditModal = () => {
+    const { editATask } = this.state;
+    this.setState({ editATask: !editATask });
+  };
+
+  saveATask = (editedTask) => {
+    axios
+      .put(`${backendUrl}${"/task/"}${editedTask._id}`, editedTask)
+      .then((response) => {
+        this.setState({
+          task: response.data,
+          editATask: !!null,
+        });
+      })
+      .catch((error) => console.log(error));
+  };
 
   render() {
-    const { task } = this.state;
+    const { task, editATask } = this.state;
 
     return (
       <>
@@ -81,13 +93,13 @@ class SingleTask extends PureComponent {
                 </Button>
               </Card.Body>
             </Card>
-            {/* {editATask && (
+            {editATask && (
               <EditTaskModal
-                task={task}
-                onSave={this.saveTask}
+                editTask={task}
+                onSave={this.saveATask}
                 onClose={this.toggleEditModal}
               />
-            )} */}
+            )}
           </div>
         ) : (
           <Spinner />
