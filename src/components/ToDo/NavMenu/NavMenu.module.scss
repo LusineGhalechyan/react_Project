@@ -1,6 +1,23 @@
-.activePage {
-  color: red;
-}
-.navLink {
-  margin: 0 10px;
+.navBarContainer {
+  padding: 0px 100px;
+
+  .activePage {
+    font-weight: 600;
+    transition: 0.5s;
+    color: #007bff !important;
+    border-bottom: 3px solid #007bff;
+  }
+
+  .navLink {
+    margin: 0 15px;
+    font-size: 20px;
+    color: #52527a;
+    padding: 15px 35px;
+    text-decoration: none !important;
+
+    &:hover {
+      font-weight: 600;
+      color: #007bff;
+    }
+  }
 }
