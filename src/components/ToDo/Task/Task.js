@@ -46,12 +46,15 @@ class Task extends PureComponent {
               {task.title.slice(0, 5) + "..."}
             </Link>
           </Card.Title>
-          <Card.Text>Description: {task.description}</Card.Text>
           <Card.Text className={styles.cardTextDate}>
-            Date: {formatDate(task.date)}
+            <strong>Description: </strong>
+            {task.description}
           </Card.Text>
           <Card.Text className={styles.cardTextDate}>
-            Created_at: {formatDate(task.created_at)}
+            <strong> Date: </strong> {formatDate(task.date)}
+          </Card.Text>
+          <Card.Text className={styles.cardTextDate}>
+            <strong>Created_at: </strong> {formatDate(task.created_at)}
           </Card.Text>
           <Button
             variant="warning"
