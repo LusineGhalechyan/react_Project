@@ -42,7 +42,7 @@ class Task extends PureComponent {
             <Form.Check type="checkbox" onClick={this.handleCheck} />
           </Form.Group>
           <Card.Title>
-            <Link to={`${"/task/"}${task._id}`}>
+            <Link to={`${"/task/"}${task._id}`} className={styles.taskCardLink}>
               {task.title.slice(0, 5) + "..."}
             </Link>
           </Card.Title>

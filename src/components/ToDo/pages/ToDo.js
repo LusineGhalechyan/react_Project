@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { useState, useEffect } from "react";
 import Task from "../Task/Task";
 import { Col, Row, Container, Button } from "react-bootstrap";
 import ArmFlag from "../ArmFlag/ArmFlag";
@@ -9,9 +9,10 @@ import styles from "../NewTasksInput/NewTasksInput.module.scss";
 import axios from "axios";
 import { backendUrl } from "../../../helpers/backendUrl";
 import ToDoImg from "../ToDoImg/ToDoImg";
+import Spinner from "../Spinner/Spinner";
 
-class ToDo extends PureComponent {
-  state = {
+const ToDo = () => {
+  const initialToDoState = {
     tasks: [],
     selectedTasksIds: new Set(),
     showConfirm: false,
@@ -19,31 +20,35 @@ class ToDo extends PureComponent {
     openNewTaskModal: false,
   };
 
-  async componentDidMount() {
-    try {
-      const response = await axios.get(`${backendUrl}${"/task"}`);
-      this.setState({
-        tasks: response.data,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const [toDoState, setToDoState] = useState(initialToDoState);
 
-  handleAddTask = (newTaskToBackend) => {
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}${"/task"}`);
+        setToDoState({ ...toDoState, tasks: response.data });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getData();
+  }, [backendUrl]);
+
+  const handleAddTask = (newTaskToBackend) => {
     axios
       .post(`${backendUrl}${"/task"}`, newTaskToBackend)
       .then((response) => {
-        this.setState({
-          tasks: [...this.state.tasks, response.data],
+        setToDoState({
+          ...toDoState,
+          tasks: [...toDoState.tasks, response.data],
           openNewTaskModal: false,
         });
       })
       .catch((error) => console.log(error, "Failed to fetch data"));
   };
 
-  handleCheck = (taskId) => {
-    const { selectedTasksIds } = this.state;
+  const handleCheck = (taskId) => {
+    const { selectedTasksIds } = toDoState;
 
     const _selectedTasksIds = new Set(selectedTasksIds);
 
@@ -51,43 +56,44 @@ class ToDo extends PureComponent {
       ? _selectedTasksIds.delete(taskId)
       : _selectedTasksIds.add(taskId);
 
-    this.setState({
+    setToDoState({
+      ...toDoState,
       selectedTasksIds: _selectedTasksIds,
     });
   };
 
-  removeTask = (task) => {
-    const { tasks } = this.state;
+  const removeTask = (task) => {
+    const { tasks } = toDoState;
 
     axios
       .delete(`${backendUrl}${"/task/"}${task._id}`)
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
         const filteredTasks = tasks.filter((t) => t._id !== task._id);
 
-        this.setState({
+        setToDoState({
+          ...toDoState,
           tasks: filteredTasks,
         });
       })
       .catch((error) => console.log(error));
   };
 
-  removeSelectedTasks = () => {
-    let { selectedTasksIds } = this.state;
-    let tasks = [...this.state.tasks];
+  const removeSelectedTasks = () => {
+    let { selectedTasksIds } = toDoState;
+    let tasks = [...toDoState.tasks];
 
     const axiosPatchRequestValue = {
       tasks: [...selectedTasksIds],
     };
     axios
       .patch(`${backendUrl}${"/task/"}`, axiosPatchRequestValue)
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
         selectedTasksIds.forEach((_id) => {
           tasks = tasks.filter((t) => t._id !== _id);
         });
 
-        this.setState({
+        setToDoState({
+          ...toDoState,
           tasks,
           selectedTasksIds: new Set(),
           showConfirm: false,
@@ -96,26 +102,31 @@ class ToDo extends PureComponent {
       .catch((error) => console.log(error));
   };
 
-  toggleConfirm = () => {
-    this.setState({
-      showConfirm: !this.state.showConfirm,
+  const toggleConfirm = () => {
+    setToDoState({
+      ...toDoState,
+      showConfirm: !toDoState.showConfirm,
     });
   };
 
-  toggleEditModal = (task) => {
-    this.setState({ editTask: task });
+  const toggleEditModal = (task) => {
+    setToDoState({
+      ...toDoState,
+      editTask: task,
+    });
   };
 
-  saveTask = (editedTask) => {
+  const saveTask = (editedTask) => {
     axios
       .put(`${backendUrl}${"/task/"}${editedTask._id}`, editedTask)
       .then((response) => {
-        const tasks = [...this.state.tasks];
+        const tasks = [...toDoState.tasks];
         const isElementExists = (task) => task._id === editedTask._id;
         const getTasktIndex = tasks.findIndex(isElementExists);
         tasks[getTasktIndex] = response.data;
 
-        this.setState({
+        setToDoState({
+          ...toDoState,
           tasks,
           editTask: null,
         });
@@ -123,89 +134,85 @@ class ToDo extends PureComponent {
       .catch((error) => console.log(error));
   };
 
-  toggleNewTaskModal = () => {
-    this.setState({
-      openNewTaskModal: !this.state.openNewTaskModal,
+  const toggleNewTaskModal = () => {
+    setToDoState({
+      ...toDoState,
+      openNewTaskModal: !toDoState.openNewTaskModal,
     });
   };
 
-  render() {
-    const {
-      tasks,
-      selectedTasksIds,
-      showConfirm,
-      editTask,
-      openNewTaskModal,
-    } = this.state;
+  const {
+    tasks,
+    selectedTasksIds,
+    showConfirm,
+    editTask,
+    openNewTaskModal,
+  } = toDoState;
 
-    const addTasks = (
-      <Row className="mb-4">
-        {tasks.map((task) => (
-          <Col key={task._id} xs={12} md={4}>
-            <Task
-              task={task}
-              onRemove={this.removeTask}
-              onCheck={this.handleCheck}
-              onEdit={this.toggleEditModal}
+  const addTasks = (
+    <Row className="mb-4">
+      {tasks.map((task) => (
+        <Col key={task._id} xs={12} md={4}>
+          <Task
+            task={task}
+            onRemove={removeTask}
+            onCheck={handleCheck}
+            onEdit={toggleEditModal}
+            disabled={selectedTasksIds.size}
+          />
+        </Col>
+      ))}
+    </Row>
+  );
+
+  return (
+    <>
+      <ToDoImg />
+      <ArmFlag />
+      <Container>
+        <Row className="justify-content-center text-center">
+          <Col xs={12} md={10} lg={8}>
+            <Button
+              className={`${styles.addTaskButton} mb-3`}
+              onClick={toggleNewTaskModal}
               disabled={selectedTasksIds.size}
-            />
+            >
+              Add new task
+            </Button>
           </Col>
-        ))}
-      </Row>
-    );
-
-    return (
-      <>
-        <ToDoImg />
-        <ArmFlag />
-        <Container>
-          <Row className="justify-content-center text-center">
-            <Col xs={12} md={10} lg={8}>
-              <Button
-                className={`${styles.addTaskButton} mb-3`}
-                onClick={this.toggleNewTaskModal}
-                disabled={selectedTasksIds.size}
-              >
-                Add new task
-              </Button>
-            </Col>
-          </Row>
-          <Row className="text-center mb-3">
-            <Col>
-              <Button
-                variant="danger"
-                onClick={this.toggleConfirm}
-                disabled={!selectedTasksIds.size}
-              >
-                Remove selected
-              </Button>
-            </Col>
-          </Row>
-          {addTasks}
-        </Container>
-        {showConfirm && (
-          <Confirm
-            removableTasksCount={selectedTasksIds.size}
-            onSubmit={this.removeSelectedTasks}
-            onClose={this.toggleConfirm}
-          />
-        )}
-        {!!editTask && (
-          <EditTaskModal
-            editTask={editTask}
-            onSave={this.saveTask}
-            onClose={() => this.toggleEditModal(null)}
-          />
-        )}
-        {openNewTaskModal && (
-          <NewTasksInput
-            onAddTask={this.handleAddTask}
-            onClose={this.toggleNewTaskModal}
-          />
-        )}
-      </>
-    );
-  }
-}
+        </Row>
+        <Row className="text-center mb-3">
+          <Col>
+            <Button
+              variant="danger"
+              onClick={toggleConfirm}
+              disabled={!selectedTasksIds.size}
+            >
+              Remove selected
+            </Button>
+          </Col>
+        </Row>
+        {!tasks.length ? <Spinner /> : addTasks}
+      </Container>
+      {showConfirm && (
+        <Confirm
+          removableTasksCount={selectedTasksIds.size}
+          onSubmit={removeSelectedTasks}
+          onClose={toggleConfirm}
+        />
+      )}
+      {!!editTask && (
+        <EditTaskModal
+          editTask={editTask}
+          onSave={saveTask}
+          onClose={() => toggleEditModal(null)}
+        />
+      )}
+      {openNewTaskModal && (
+        <NewTasksInput onAddTask={handleAddTask} onClose={toggleNewTaskModal} />
+      )}
+    </>
+  );
+};
 
 export default ToDo;
