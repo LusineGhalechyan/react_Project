@@ -1,3 +1,18 @@
 .about {
-  margin: 80px 30px;
+  margin: 100px 150px 50px;
+
+  .lineBreak {
+    white-space: pre-line;
+  }
+
+  .aboutCardButton {
+    padding: 6px 0px;
+  }
+
+  .aboutCardLink {
+    &:hover {
+      font-weight: 700;
+      color: #ff4d94;
+    }
+  }
 }

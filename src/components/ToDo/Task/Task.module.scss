@@ -7,6 +7,12 @@
   border: 1px solid red;
 }
 
+.taskCardLink {
+  &:hover {
+    color: #0039e6 !important;
+  }
+}
+
 .cardTextDate {
   font-size: small;
   color: #52527a;
