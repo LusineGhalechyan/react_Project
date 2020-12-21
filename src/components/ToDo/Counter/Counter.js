@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 
 class Counter extends PureComponent {
   state = {
+    count: 0,
     getCount: 0,
   };
 
@@ -15,14 +16,19 @@ class Counter extends PureComponent {
   };
 
   resetCount = () => {
-    this.setState({ getCount: 0 });
+    this.setState({
+      getCount: 0,
+    });
   };
 
   render() {
     return (
       <div className={styles.counterContainer}>
         <ShowCounter count={this.state.getCount} />
-        <ChangeCounter SendIncrementCount={this.getCount} />
+        <ChangeCounter
+          SendIncrementCount={this.getCount}
+          count={this.state.getCount}
+        />
         <div>
           <Button onClick={this.resetCount}>ResetCount</Button>
         </div>

@@ -4,7 +4,6 @@ import styles from "./Counter.module.scss";
 
 class ChangeCounter extends PureComponent {
   state = {
-    count: 0,
     changeCount: 0,
     counts: [
       { id: 0, count: "Count" },
@@ -15,14 +14,13 @@ class ChangeCounter extends PureComponent {
   };
 
   handleIncrement = () => {
-    this.setState({ count: this.state.count + this.state.changeCount }, () => {
+    this.setState({ count: this.props.count + this.state.changeCount }, () => {
       this.props.SendIncrementCount(this.state.count);
     });
-    this.setState({ count: 0, changeCount: 0 });
   };
 
   handleDecrement = () => {
-    this.setState({ count: this.state.count - this.state.changeCount }, () => {
+    this.setState({ count: this.props.count - this.state.changeCount }, () => {
       this.props.SendIncrementCount(this.state.count);
     });
   };
