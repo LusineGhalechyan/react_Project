@@ -1,40 +1,23 @@
 import React from "react";
-import { PureComponent } from "react";
+import { useDispatch } from "react-redux";
 import ChangeCounter from "./ChangeCounter";
 import ShowCounter from "./ShowCounter";
 import styles from "./Counter.module.scss";
 import { Button } from "react-bootstrap";
+import { RESET_COUNT } from "../redux/actions";
 
-class Counter extends PureComponent {
-  state = {
-    count: 0,
-    getCount: 0,
-  };
+const Counter = () => {
+  const dispatch = useDispatch();
 
-  getCount = (count) => {
-    this.setState({ getCount: count });
-  };
-
-  resetCount = () => {
-    this.setState({
-      getCount: 0,
-    });
-  };
-
-  render() {
-    return (
-      <div className={styles.counterContainer}>
-        <ShowCounter count={this.state.getCount} />
-        <ChangeCounter
-          SendIncrementCount={this.getCount}
-          count={this.state.getCount}
-        />
-        <div>
-          <Button onClick={this.resetCount}>ResetCount</Button>
-        </div>
+  return (
+    <div className={styles.counterContainer}>
+      <ShowCounter />
+      <ChangeCounter />
+      <div>
+        <Button onClick={() => dispatch(RESET_COUNT())}>ResetCount</Button>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default Counter;

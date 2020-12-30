@@ -1,14 +1,14 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import { Badge } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
-class ShowCounter extends PureComponent {
-  render() {
-    return (
-      <h2>
-        <Badge variant="success">{this.props.count}</Badge>
-      </h2>
-    );
-  }
-}
+const ShowCounter = () => {
+  const count = useSelector((state) => state.count);
+  return (
+    <h2>
+      <Badge variant="success">{count}</Badge>
+    </h2>
+  );
+};
 
 export default ShowCounter;

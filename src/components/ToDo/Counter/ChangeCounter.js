@@ -1,69 +1,48 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
+import {
+  INCREASE_COUNT,
+  DECREASE_COUNT,
+  SAVE_SELECT_VALUE,
+} from "../redux/actions";
+import { useDispatch } from "react-redux";
 import styles from "./Counter.module.scss";
 
-class ChangeCounter extends PureComponent {
-  state = {
-    changeCount: 0,
-    counts: [
-      { id: 0, count: "Count" },
-      { id: 1, count: "one" },
-      { id: 5, count: "five" },
-      { id: 10, count: "ten" },
-    ],
-  };
+const ChangeCounter = () => {
+  const dispatch = useDispatch();
 
-  handleIncrement = () => {
-    this.setState({ count: this.props.count + this.state.changeCount }, () => {
-      this.props.SendIncrementCount(this.state.count);
-    });
-  };
+  const select = (
+    <select
+      onChange={(e) => dispatch(SAVE_SELECT_VALUE(Number(e.target.value)))}
+      className={`${styles.selectChangeCounter} mr-3 `}
+    >
+      <option value="0">Counts</option>
+      <option value="1">one</option>
+      <option value="5">five</option>
+      <option value="10">ten</option>
+    </select>
+  );
 
-  handleDecrement = () => {
-    this.setState({ count: this.props.count - this.state.changeCount }, () => {
-      this.props.SendIncrementCount(this.state.count);
-    });
-  };
-
-  handleChange = (event) => {
-    const isCountExists = (count) => count.count === event.target.value;
-    this.setState({
-      changeCount: this.state.counts.find(isCountExists).id,
-    });
-  };
-
-  render() {
-    const select = (
-      <select
-        onChange={this.handleChange}
-        className={`${styles.selectChangeCounter} mr-3 `}
+  return (
+    <>
+      {select}
+      <Button
+        variant="outline-dark"
+        className="mb-3 mr-3"
+        onClick={() => dispatch(INCREASE_COUNT())}
       >
-        {this.state.counts.map((count) => (
-          <option key={count.id}>{count.count}</option>
-        ))}
-      </select>
-    );
-    return (
-      <>
-        {select}
-        <Button
-          variant="outline-dark"
-          className="mb-3 mr-3"
-          onClick={this.handleIncrement}
-        >
-          Increment
-        </Button>
+        Increment
+      </Button>
 
-        <Button
-          variant="outline-dark"
-          className="mb-3 mr-3"
-          onClick={this.handleDecrement}
-        >
-          Decrement
-        </Button>
-      </>
-    );
-  }
-}
+      <Button
+        variant="outline-dark"
+        className="mb-3 mr-3"
+        onClick={() => dispatch(DECREASE_COUNT())}
+      >
+        Decrement
+      </Button>
+    </>
+  );
+};
 
 export default ChangeCounter;
