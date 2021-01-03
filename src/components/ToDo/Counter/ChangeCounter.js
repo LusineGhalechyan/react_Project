@@ -4,7 +4,7 @@ import {
   INCREASE_COUNT,
   DECREASE_COUNT,
   SAVE_SELECT_VALUE,
-} from "../redux/actions";
+} from "../../../redux/actions";
 import { useDispatch } from "react-redux";
 import styles from "./Counter.module.scss";
 
