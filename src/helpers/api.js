@@ -9,8 +9,12 @@ const instance = axios.create({
 });
 
 export const request = {
-  getTask() {
-    return instance.get(`${"/task"}`).then((response) => response.data);
+  getTask(taskId) {
+    if (!taskId)
+      return instance.get(`${"/task"}`).then((response) => response.data);
+    return instance
+      .get(`${"/task/"}${taskId}`)
+      .then((response) => response.data);
   },
 
   postTask(newTaskToBackend) {

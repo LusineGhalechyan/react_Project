@@ -8,6 +8,7 @@ import styles from "./SingleTask.module.scss";
 import { formatDate } from "../../../../helpers/utils";
 import Spinner from "../../Spinner/Spinner";
 import EditTaskModal from "../../EditTaskModal/EditTaskModal";
+import { request } from "../../../../helpers/api";
 
 class SingleTask extends PureComponent {
   state = {
@@ -19,8 +20,8 @@ class SingleTask extends PureComponent {
     const taskId = this.props.match.params.id;
 
     try {
-      const response = await axios.get(`${baseURL}${"/task/"}${taskId}`);
-      this.setState({ task: response.data });
+      const response = await request.getTask(`${taskId}`);
+      this.setState({ task: response });
     } catch (error) {
       console.log(error);
     }
@@ -29,8 +30,8 @@ class SingleTask extends PureComponent {
   removeATask = () => {
     const taskId = this.state.task._id;
 
-    axios
-      .delete(`${baseURL}${"/task/"}${taskId}`)
+    request
+      .removeTask(`${taskId}`)
       .then(() => {
         this.props.history.push("/");
       })
@@ -43,11 +44,11 @@ class SingleTask extends PureComponent {
   };
 
   saveATask = (editedTask) => {
-    axios
-      .put(`${baseURL}${"/task/"}${editedTask._id}`, editedTask)
+    request
+      .saveEditedTask(`${editedTask._id}`, editedTask)
       .then((response) => {
         this.setState({
-          task: response.data,
+          task: response,
           editATask: !!null,
         });
       })

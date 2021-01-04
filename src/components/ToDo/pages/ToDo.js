@@ -107,7 +107,7 @@ const ToDo = () => {
 
   const toggleConfirm = () => {
     setToDoState({
-      ...toDoState, 
+      ...toDoState,
       showConfirm: !toDoState.showConfirm,
     });
   };
