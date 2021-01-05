@@ -10,7 +10,8 @@ import axios from "axios";
 import { baseURL } from "../../../helpers/baseURL";
 import ToDoImg from "../ToDoImg/ToDoImg";
 import Spinner from "../Spinner/Spinner";
-import { request } from "../../../helpers/api";
+import { api } from "../../../helpers/api";
+import { useSelector, useDispatch } from "react-redux";
 
 const ToDo = () => {
   const initialToDoState = {
@@ -22,11 +23,14 @@ const ToDo = () => {
   };
 
   const [toDoState, setToDoState] = useState(initialToDoState);
+  // const tasks = useSelector((state) => state.tasks);
+  const dispatch = useDispatch();
+  // console.log("_tasks", _tasks);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await request.getTask();
+        const response = await api.getTask();
         setToDoState({ ...toDoState, tasks: response });
       } catch (error) {
         console.log(error);
@@ -37,7 +41,7 @@ const ToDo = () => {
   }, [baseURL]);
 
   const handleAddTask = (newTaskToBackend) => {
-    request
+    api
       .postTask(newTaskToBackend)
       .then((response) => {
         setToDoState({
@@ -67,7 +71,7 @@ const ToDo = () => {
   const removeTask = (task) => {
     const { tasks } = toDoState;
 
-    request
+    api
       .removeTask(`${task._id}`)
       .then(() => {
         const filteredTasks = tasks.filter((t) => t._id !== task._id);
@@ -88,7 +92,7 @@ const ToDo = () => {
       tasks: [...selectedTasksIds],
     };
 
-    request
+    api
       .removeSelectedTasks(axiosPatchRequestValue)
       .then(() => {
         selectedTasksIds.forEach((_id) => {
@@ -120,7 +124,7 @@ const ToDo = () => {
   };
 
   const saveTask = (editedTask) => {
-    request
+    api
       .saveEditedTask(`${editedTask._id}`, editedTask)
       .then((response) => {
         const tasks = [...toDoState.tasks];

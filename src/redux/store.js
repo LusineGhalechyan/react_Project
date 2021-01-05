@@ -3,5 +3,5 @@ import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 
-const middleware = applyMiddleware(thunk, logger);
-export const store = createStore(reducer, middleware);
+// const middleware = applyMiddleware(thunk, logger);
+export const store = createStore(reducer, applyMiddleware(thunk, logger));

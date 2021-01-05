@@ -8,7 +8,7 @@ const instance = axios.create({
   },
 });
 
-export const request = {
+export const api = {
   getTask(taskId) {
     if (!taskId)
       return instance.get(`${"/task"}`).then((response) => response.data);
@@ -36,4 +36,12 @@ export const request = {
       .put(`${"/task/"}${editedTaskId}`, editedTask)
       .then((response) => response.data);
   },
+};
+
+export const request = async () => {
+  try {
+    const response = await api.getTask();
+  } catch (error) {
+    console.log(error);
+  }
 };

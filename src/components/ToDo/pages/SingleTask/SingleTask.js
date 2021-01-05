@@ -3,12 +3,12 @@ import axios from "axios";
 import { Card, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { baseURL } from "../../../../helpers/baseURL";
+// import { baseURL } from "../../../../helpers/baseURL";
 import styles from "./SingleTask.module.scss";
 import { formatDate } from "../../../../helpers/utils";
 import Spinner from "../../Spinner/Spinner";
 import EditTaskModal from "../../EditTaskModal/EditTaskModal";
-import { request } from "../../../../helpers/api";
+import { api } from "../../../../helpers/api";
 
 class SingleTask extends PureComponent {
   state = {
@@ -20,7 +20,7 @@ class SingleTask extends PureComponent {
     const taskId = this.props.match.params.id;
 
     try {
-      const response = await request.getTask(`${taskId}`);
+      const response = await api.getTask(`${taskId}`);
       this.setState({ task: response });
     } catch (error) {
       console.log(error);
@@ -30,7 +30,7 @@ class SingleTask extends PureComponent {
   removeATask = () => {
     const taskId = this.state.task._id;
 
-    request
+    api
       .removeTask(`${taskId}`)
       .then(() => {
         this.props.history.push("/");
@@ -44,7 +44,7 @@ class SingleTask extends PureComponent {
   };
 
   saveATask = (editedTask) => {
-    request
+    api
       .saveEditedTask(`${editedTask._id}`, editedTask)
       .then((response) => {
         this.setState({
