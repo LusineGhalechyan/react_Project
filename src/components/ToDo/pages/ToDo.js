@@ -30,7 +30,7 @@ const ToDo = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.getTask();
+        const response = await api.getTasks();
         setToDoState({ ...toDoState, tasks: response });
       } catch (error) {
         console.log(error);

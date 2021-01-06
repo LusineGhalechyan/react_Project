@@ -1,9 +1,9 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import {
-  INCREASE_COUNT,
-  DECREASE_COUNT,
-  SAVE_SELECT_VALUE,
+  increaseCount,
+  decreaseCount,
+  saveSelectValue,
 } from "../../../redux/actions";
 import { useDispatch } from "react-redux";
 import styles from "./Counter.module.scss";
@@ -13,7 +13,7 @@ const ChangeCounter = () => {
 
   const select = (
     <select
-      onChange={(e) => dispatch(SAVE_SELECT_VALUE(Number(e.target.value)))}
+      onChange={(e) => dispatch(saveSelectValue(Number(e.target.value)))}
       className={`${styles.selectChangeCounter} mr-3 `}
     >
       <option value="0">Counts</option>
@@ -29,7 +29,7 @@ const ChangeCounter = () => {
       <Button
         variant="outline-dark"
         className="mb-3 mr-3"
-        onClick={() => dispatch(INCREASE_COUNT())}
+        onClick={() => dispatch(increaseCount())}
       >
         Increment
       </Button>
@@ -37,7 +37,7 @@ const ChangeCounter = () => {
       <Button
         variant="outline-dark"
         className="mb-3 mr-3"
-        onClick={() => dispatch(DECREASE_COUNT())}
+        onClick={() => dispatch(decreaseCount())}
       >
         Decrement
       </Button>

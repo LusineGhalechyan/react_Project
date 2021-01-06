@@ -4,6 +4,7 @@ const defaultState = {
   count: 0,
   changeCount: 0,
   selections: [],
+  isLoading: false,
   tasks: [],
 };
 
@@ -31,6 +32,12 @@ const reducer = (state = defaultState, action) => {
       return {
         ...state,
         count: 0,
+      };
+
+    case actions.FETCH_TASKS:
+      return {
+        ...state,
+        isLoading: true,
       };
 
     default:

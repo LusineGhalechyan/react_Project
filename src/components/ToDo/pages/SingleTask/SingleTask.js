@@ -20,7 +20,7 @@ class SingleTask extends PureComponent {
     const taskId = this.props.match.params.id;
 
     try {
-      const response = await api.getTask(`${taskId}`);
+      const response = await api.getTasks(`${taskId}`);
       this.setState({ task: response });
     } catch (error) {
       console.log(error);

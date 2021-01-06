@@ -4,7 +4,7 @@ import ChangeCounter from "./ChangeCounter";
 import ShowCounter from "./ShowCounter";
 import styles from "./Counter.module.scss";
 import { Button } from "react-bootstrap";
-import { RESET_COUNT } from "../../../redux/actions";
+import { resetCount } from "../../../redux/actions";
 
 const Counter = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const Counter = () => {
       <ShowCounter />
       <ChangeCounter />
       <div>
-        <Button onClick={() => dispatch(RESET_COUNT())}>ResetCount</Button>
+        <Button onClick={() => dispatch(resetCount())}>ResetCount</Button>
       </div>
     </div>
   );
