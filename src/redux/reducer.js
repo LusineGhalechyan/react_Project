@@ -2,6 +2,7 @@ import * as actions from "./actionTypes";
 
 const defaultState = {
   count: 0,
+  disabled: true,
   changeCount: 0,
   selections: [],
 };

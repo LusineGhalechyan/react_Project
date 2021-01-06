@@ -5,11 +5,16 @@ import {
   decreaseCount,
   saveSelectValue,
 } from "../../../redux/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Counter.module.scss";
 
 const ChangeCounter = () => {
   const dispatch = useDispatch();
+
+  const disabled = useSelector((state) => state.disabled);
+  const count = useSelector(
+    (state) => state.selections[state.selections.length - 1]
+  );
 
   const select = (
     <select
@@ -29,6 +34,7 @@ const ChangeCounter = () => {
       <Button
         variant="outline-dark"
         className="mb-3 mr-3"
+        disabled={!count && disabled}
         onClick={() => dispatch(increaseCount())}
       >
         Increment
@@ -37,6 +43,7 @@ const ChangeCounter = () => {
       <Button
         variant="outline-dark"
         className="mb-3 mr-3"
+        disabled={!count && disabled}
         onClick={() => dispatch(decreaseCount())}
       >
         Decrement
