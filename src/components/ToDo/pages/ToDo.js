@@ -32,6 +32,7 @@ const ToDo = () => {
       }
     };
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [backendUrl]);
 
   const handleAddTask = (newTaskToBackend) => {

@@ -3,6 +3,7 @@ import About from "../components/ToDo/pages/About/About";
 import SingleTask from "../components/ToDo/pages/SingleTask/SingleTask";
 import Contact from "../components/ToDo/pages/Contact/Contact";
 import NotFound from "../components/ToDo/pages/NotFound/NotFound";
+import Counter from "../components/ToDo/Counter/Counter";
 
 export const routesData = [
   {
@@ -20,6 +21,10 @@ export const routesData = [
   {
     path: "/contact",
     component: Contact,
+  },
+  {
+    path: "/counter",
+    component: Counter,
   },
   {
     path: "/404",
