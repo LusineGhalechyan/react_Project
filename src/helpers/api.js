@@ -1,9 +1,5 @@
 import axios from "axios";
 import { baseURL } from "./baseURL";
-import { useDispatch } from "react-redux";
-import { fetchTasks } from "../redux/actions";
-
-const dispatch = useDispatch();
 
 const instance = axios.create({
   baseURL,
@@ -40,13 +36,4 @@ export const api = {
       .put(`${"/task/"}${editedTaskId}`, editedTask)
       .then((response) => response.data);
   },
-};
-
-export const request = async (dispatch) => {
-  dispatch(fetchTasks());
-  try {
-    const response = await api.getTasks();
-  } catch (error) {
-    console.log(error);
-  }
 };

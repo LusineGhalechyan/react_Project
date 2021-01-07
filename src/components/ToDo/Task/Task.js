@@ -46,7 +46,9 @@ class Task extends PureComponent {
               {task.title.slice(0, 5) + "..."}
             </Link>
           </Card.Title>
-          <Card.Text className={styles.cardTextDate}>
+          <Card.Text
+            className={`${styles.cardTextDate} ${styles.limitTextLength}`}
+          >
             <strong>Description: </strong>
             {task.description}
           </Card.Text>

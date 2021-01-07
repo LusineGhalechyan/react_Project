@@ -2,10 +2,11 @@ import * as actions from "./actionTypes";
 
 const defaultState = {
   count: 0,
+  disabled: true,
   changeCount: 0,
   selections: [],
-  isLoading: false,
   tasks: [],
+  error: null,
 };
 
 const reducer = (state = defaultState, action) => {
@@ -34,10 +35,16 @@ const reducer = (state = defaultState, action) => {
         count: 0,
       };
 
-    case actions.FETCH_TASKS:
+    case actions.TASKS_FETCHED:
       return {
         ...state,
-        isLoading: true,
+        tasks: action.payload.fetchedTasks,
+      };
+
+    case actions.FAILURE_TO_FETCH_TASKS:
+      return {
+        ...state,
+        error: action.payload.error,
       };
 
     default:

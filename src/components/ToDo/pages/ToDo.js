@@ -6,16 +6,14 @@ import NewTasksInput from "../NewTasksInput/NewTasksInput";
 import Confirm from "../Confirm/Confirm";
 import EditTaskModal from "../EditTaskModal/EditTaskModal";
 import styles from "../NewTasksInput/NewTasksInput.module.scss";
-import axios from "axios";
-import { baseURL } from "../../../helpers/baseURL";
 import ToDoImg from "../ToDoImg/ToDoImg";
 import Spinner from "../Spinner/Spinner";
 import { api } from "../../../helpers/api";
+import { requestMiddleWare } from "../../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
 
 const ToDo = () => {
   const initialToDoState = {
-    tasks: [],
     selectedTasksIds: new Set(),
     showConfirm: false,
     editTask: null,
@@ -23,22 +21,12 @@ const ToDo = () => {
   };
 
   const [toDoState, setToDoState] = useState(initialToDoState);
-  // const tasks = useSelector((state) => state.tasks);
   const dispatch = useDispatch();
-  // console.log("_tasks", _tasks);
+  const tasks = useSelector((state) => state.tasks);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await api.getTasks();
-        setToDoState({ ...toDoState, tasks: response });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [baseURL]);
+    dispatch(requestMiddleWare());
+  }, []);
 
   const handleAddTask = (newTaskToBackend) => {
     api
@@ -149,7 +137,6 @@ const ToDo = () => {
   };
 
   const {
-    tasks,
     selectedTasksIds,
     showConfirm,
     editTask,

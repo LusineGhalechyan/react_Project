@@ -1,9 +1,7 @@
 import React, { PureComponent } from "react";
-import axios from "axios";
 import { Card, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-// import { baseURL } from "../../../../helpers/baseURL";
 import styles from "./SingleTask.module.scss";
 import { formatDate } from "../../../../helpers/utils";
 import Spinner from "../../Spinner/Spinner";
