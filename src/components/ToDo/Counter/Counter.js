@@ -8,6 +8,10 @@ import { resetCount } from "../../../redux/actions";
 
 const Counter = () => {
   const dispatch = useDispatch();
+  const disabled = useSelector((state) => state.disabled);
+  const count = useSelector(
+    (state) => state.selections[state.selections.length - 1]
+  );
 
   const disabled = useSelector((state) => state.disabled);
   const count = useSelector(
