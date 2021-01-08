@@ -21,16 +21,21 @@ const resetCount = () => ({
 });
 
 const tasksFetched = (fetchedTasks) => ({
-  type: actions.TASKS_FETCHED,
+  type: actions.TASK_TASKS_FETCHED,
   payload: {
     fetchedTasks,
   },
 });
 
-const requestMiddleWare = () => async (dispatch) => {
+const requestMiddleWare = (taskId) => async (dispatch) => {
   try {
-    const response = await api.getTasks();
-    dispatch(tasksFetched(response));
+    if (!taskId) {
+      const response = await api.getTasks();
+      dispatch(tasksFetched(response));
+    } else {
+      const response = await api.getTasks(taskId);
+      dispatch(tasksFetched(response));
+    }
   } catch (error) {
     dispatch({ type: actions.FAILURE_TO_FETCH_TASKS, payload: error });
   }

@@ -7,6 +7,8 @@ import { formatDate } from "../../../../helpers/utils";
 import Spinner from "../../Spinner/Spinner";
 import EditTaskModal from "../../EditTaskModal/EditTaskModal";
 import { api } from "../../../../helpers/api";
+import { connect } from "react-redux";
+import { requestMiddleWare } from "../../../../redux/actions";
 
 class SingleTask extends PureComponent {
   state = {
@@ -14,20 +16,13 @@ class SingleTask extends PureComponent {
     editATask: !!null,
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     const taskId = this.props.match.params.id;
-
-    try {
-      const response = await api.getTasks(`${taskId}`);
-      this.setState({ task: response });
-    } catch (error) {
-      console.log(error);
-    }
+    this.props.requestMiddleWare(taskId);
   }
 
   removeATask = () => {
     const taskId = this.state.task._id;
-
     api
       .removeTask(`${taskId}`)
       .then(() => {
@@ -108,4 +103,8 @@ class SingleTask extends PureComponent {
   }
 }
 
-export default SingleTask;
+const mapDispatchToProps = {
+  requestMiddleWare,
+};
+
+export default connect(null, mapDispatchToProps)(SingleTask);

@@ -14,7 +14,7 @@ export const api = {
       return instance.get(`${"/task"}`).then((response) => response.data);
     return instance
       .get(`${"/task/"}${taskId}`)
-      .then((response) => response.data);
+      .then((response) => [response.data]);
   },
 
   postTask(newTaskToBackend) {

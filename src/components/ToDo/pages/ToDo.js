@@ -11,6 +11,7 @@ import Spinner from "../Spinner/Spinner";
 import { api } from "../../../helpers/api";
 import { requestMiddleWare } from "../../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
+import { baseURL } from "../../../helpers/baseURL";
 
 const ToDo = () => {
   const initialToDoState = {
@@ -26,7 +27,8 @@ const ToDo = () => {
 
   useEffect(() => {
     dispatch(requestMiddleWare());
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [baseURL]);
 
   const handleAddTask = (newTaskToBackend) => {
     api
@@ -158,7 +160,6 @@ const ToDo = () => {
       ))}
     </Row>
   );
-
   return (
     <>
       <ToDoImg />

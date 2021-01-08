@@ -34,8 +34,8 @@ const reducer = (state = defaultState, action) => {
         ...state,
         count: 0,
       };
-
-    case actions.TASKS_FETCHED:
+   
+    case actions.TASK_TASKS_FETCHED:
       return {
         ...state,
         tasks: action.payload.fetchedTasks,

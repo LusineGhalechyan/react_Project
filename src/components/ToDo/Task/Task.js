@@ -43,7 +43,7 @@ class Task extends PureComponent {
           </Form.Group>
           <Card.Title>
             <Link to={`${"/task/"}${task._id}`} className={styles.taskCardLink}>
-              {task.title.slice(0, 5) + "..."}
+              {task.title.slice(0, 10) + "..."}
             </Link>
           </Card.Title>
           <Card.Text
