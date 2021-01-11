@@ -1,9 +1,6 @@
 import { reducer } from "./reducer";
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
+import thunk from "redux-thunk";
+import logger from "redux-logger";
 
-export const store = createStore(reducer);
-
-const subscribe = store.subscribe(() =>
-  console.log("State after dispatch: ", store.getState())
-);
-console.log("subscribe", subscribe);
+export const store = createStore(reducer, applyMiddleware(thunk, logger));

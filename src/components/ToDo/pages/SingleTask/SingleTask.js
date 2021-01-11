@@ -1,13 +1,14 @@
 import React, { PureComponent } from "react";
-import axios from "axios";
 import { Card, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { backendUrl } from "../../../../helpers/backendUrl";
 import styles from "./SingleTask.module.scss";
 import { formatDate } from "../../../../helpers/utils";
 import Spinner from "../../Spinner/Spinner";
 import EditTaskModal from "../../EditTaskModal/EditTaskModal";
+import { api } from "../../../../helpers/api";
+import { connect } from "react-redux";
+import { requestMiddleWare } from "../../../../redux/actions";
 
 class SingleTask extends PureComponent {
   state = {
@@ -15,22 +16,15 @@ class SingleTask extends PureComponent {
     editATask: !!null,
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     const taskId = this.props.match.params.id;
-
-    try {
-      const response = await axios.get(`${backendUrl}${"/task/"}${taskId}`);
-      this.setState({ task: response.data });
-    } catch (error) {
-      console.log(error);
-    }
+    this.props.requestMiddleWare(taskId);
   }
 
   removeATask = () => {
     const taskId = this.state.task._id;
-
-    axios
-      .delete(`${backendUrl}${"/task/"}${taskId}`)
+    api
+      .removeTask(`${taskId}`)
       .then(() => {
         this.props.history.push("/");
       })
@@ -43,11 +37,11 @@ class SingleTask extends PureComponent {
   };
 
   saveATask = (editedTask) => {
-    axios
-      .put(`${backendUrl}${"/task/"}${editedTask._id}`, editedTask)
+    api
+      .saveEditedTask(`${editedTask._id}`, editedTask)
       .then((response) => {
         this.setState({
-          task: response.data,
+          task: response,
           editATask: !!null,
         });
       })
@@ -109,4 +103,8 @@ class SingleTask extends PureComponent {
   }
 }
 
-export default SingleTask;
+const mapDispatchToProps = {
+  requestMiddleWare,
+};
+
+export default connect(null, mapDispatchToProps)(SingleTask);

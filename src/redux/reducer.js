@@ -5,6 +5,8 @@ const defaultState = {
   disabled: true,
   changeCount: 0,
   selections: [],
+  tasks: [],
+  error: null,
 };
 
 const reducer = (state = defaultState, action) => {
@@ -31,6 +33,18 @@ const reducer = (state = defaultState, action) => {
       return {
         ...state,
         count: 0,
+      };
+   
+    case actions.TASK_TASKS_FETCHED:
+      return {
+        ...state,
+        tasks: action.payload.fetchedTasks,
+      };
+
+    case actions.FAILURE_TO_FETCH_TASKS:
+      return {
+        ...state,
+        error: action.payload.error,
       };
 
     default:

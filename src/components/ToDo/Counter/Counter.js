@@ -13,6 +13,7 @@ const Counter = () => {
     (state) => state.selections[state.selections.length - 1]
   );
 
+
   return (
     <div className={styles.counterContainer}>
       <ShowCounter />

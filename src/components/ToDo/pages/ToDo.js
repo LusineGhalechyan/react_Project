@@ -6,14 +6,15 @@ import NewTasksInput from "../NewTasksInput/NewTasksInput";
 import Confirm from "../Confirm/Confirm";
 import EditTaskModal from "../EditTaskModal/EditTaskModal";
 import styles from "../NewTasksInput/NewTasksInput.module.scss";
-import axios from "axios";
-import { backendUrl } from "../../../helpers/backendUrl";
 import ToDoImg from "../ToDoImg/ToDoImg";
 import Spinner from "../Spinner/Spinner";
+import { api } from "../../../helpers/api";
+import { requestMiddleWare } from "../../../redux/actions";
+import { useSelector, useDispatch } from "react-redux";
+import { baseURL } from "../../../helpers/baseURL";
 
 const ToDo = () => {
   const initialToDoState = {
-    tasks: [],
     selectedTasksIds: new Set(),
     showConfirm: false,
     editTask: null,
@@ -21,27 +22,21 @@ const ToDo = () => {
   };
 
   const [toDoState, setToDoState] = useState(initialToDoState);
+  const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.tasks);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axios.get(`${backendUrl}${"/task"}`);
-        setToDoState({ ...toDoState, tasks: response.data });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
+    dispatch(requestMiddleWare());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [backendUrl]);
+  }, [baseURL]);
 
   const handleAddTask = (newTaskToBackend) => {
-    axios
-      .post(`${backendUrl}${"/task"}`, newTaskToBackend)
+    api
+      .postTask(newTaskToBackend)
       .then((response) => {
         setToDoState({
           ...toDoState,
-          tasks: [...toDoState.tasks, response.data],
+          tasks: [...toDoState.tasks, response],
           openNewTaskModal: false,
         });
       })
@@ -66,8 +61,8 @@ const ToDo = () => {
   const removeTask = (task) => {
     const { tasks } = toDoState;
 
-    axios
-      .delete(`${backendUrl}${"/task/"}${task._id}`)
+    api
+      .removeTask(`${task._id}`)
       .then(() => {
         const filteredTasks = tasks.filter((t) => t._id !== task._id);
 
@@ -86,8 +81,9 @@ const ToDo = () => {
     const axiosPatchRequestValue = {
       tasks: [...selectedTasksIds],
     };
-    axios
-      .patch(`${backendUrl}${"/task/"}`, axiosPatchRequestValue)
+
+    api
+      .removeSelectedTasks(axiosPatchRequestValue)
       .then(() => {
         selectedTasksIds.forEach((_id) => {
           tasks = tasks.filter((t) => t._id !== _id);
@@ -118,13 +114,13 @@ const ToDo = () => {
   };
 
   const saveTask = (editedTask) => {
-    axios
-      .put(`${backendUrl}${"/task/"}${editedTask._id}`, editedTask)
+    api
+      .saveEditedTask(`${editedTask._id}`, editedTask)
       .then((response) => {
         const tasks = [...toDoState.tasks];
         const isElementExists = (task) => task._id === editedTask._id;
         const getTasktIndex = tasks.findIndex(isElementExists);
-        tasks[getTasktIndex] = response.data;
+        tasks[getTasktIndex] = response;
 
         setToDoState({
           ...toDoState,
@@ -143,7 +139,6 @@ const ToDo = () => {
   };
 
   const {
-    tasks,
     selectedTasksIds,
     showConfirm,
     editTask,
@@ -165,7 +160,6 @@ const ToDo = () => {
       ))}
     </Row>
   );
-
   return (
     <>
       <ToDoImg />
