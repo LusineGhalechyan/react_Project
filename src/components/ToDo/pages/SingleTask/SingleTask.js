@@ -4,15 +4,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import styles from "./SingleTask.module.scss";
 import { formatDate } from "../../../../helpers/utils";
-import Spinner from "../../Spinner/Spinner";
 import EditTaskModal from "../../EditTaskModal/EditTaskModal";
-import { api } from "../../../../helpers/api";
 import { connect } from "react-redux";
-import { requestMiddleWare } from "../../../../redux/actions";
+import {
+  requestMiddleWare,
+  removeTaskMiddleWare,
+} from "../../../../redux/actions";
+import NotFoundTask from "../NotFound/NotFoundPage/NotFoundTask/NotFoundTask";
 
 class SingleTask extends PureComponent {
   state = {
-    task: null,
+    // task: null,
     editATask: !!null,
   };
 
@@ -21,14 +23,20 @@ class SingleTask extends PureComponent {
     this.props.requestMiddleWare(taskId);
   }
 
+  componentDidUpdate(prevProps) {
+    if (!prevProps.editTaskSuccess && this.props.editTaskSuccess) {
+      this.setState({ editATask: !!null });
+    }
+
+    if (!prevProps.removeTaskSuccess && this.props.removeTaskSuccess) {
+      this.props.history.push("/");
+    }
+  }
+
   removeATask = () => {
-    const taskId = this.state.task._id;
-    api
-      .removeTask(`${taskId}`)
-      .then(() => {
-        this.props.history.push("/");
-      })
-      .catch((error) => console.log(error));
+    const removableTask = this.props.task;
+    const from = `single`;
+    this.props.removeTaskMiddleWare(removableTask, from);
   };
 
   toggleEditModal = () => {
@@ -36,20 +44,9 @@ class SingleTask extends PureComponent {
     this.setState({ editATask: !editATask });
   };
 
-  saveATask = (editedTask) => {
-    api
-      .saveEditedTask(`${editedTask._id}`, editedTask)
-      .then((response) => {
-        this.setState({
-          task: response,
-          editATask: !!null,
-        });
-      })
-      .catch((error) => console.log(error));
-  };
-
   render() {
-    const { task, editATask } = this.state;
+    const { editATask } = this.state;
+    const { task } = this.props;
 
     return (
       <>
@@ -90,21 +87,30 @@ class SingleTask extends PureComponent {
             {editATask && (
               <EditTaskModal
                 editTask={task}
-                onSave={this.saveATask}
+                from="single"
                 onClose={this.toggleEditModal}
               />
             )}
           </div>
         ) : (
-          <Spinner />
+          <NotFoundTask />
         )}
       </>
     );
   }
 }
 
-const mapDispatchToProps = {
-  requestMiddleWare,
+const mapStateToProps = (state) => {
+  return {
+    task: state.task,
+    editTaskSuccess: state.editTaskSuccess,
+    removeTaskSuccess: state.removeTaskSuccess,
+  };
 };
 
-export default connect(null, mapDispatchToProps)(SingleTask);
+const mapDispatchToProps = {
+  requestMiddleWare,
+  removeTaskMiddleWare,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleTask);

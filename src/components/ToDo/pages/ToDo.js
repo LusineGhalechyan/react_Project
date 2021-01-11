@@ -145,6 +145,7 @@ const ToDo = () => {
       {!!editTask && (
         <EditTaskModal
           editTask={editTask}
+          from="tasks"
           onClose={() => toggleEditModal(null)}
         />
       )}

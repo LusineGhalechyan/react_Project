@@ -6,41 +6,47 @@ const defaultState = {
   changeCount: 0,
   selections: [],
   tasks: [],
+  task: null,
   loading: false,
   errorMessage: null,
   successMessage: null,
   addTaskSuccess: false,
+  removeTaskSuccess: false,
   removeSelectedTasksSuccess: false,
   editTaskSuccess: false,
 };
 
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case actions.INCREASE_COUNT:
+    case actions.INCREASE_COUNT: {
       return {
         ...state,
         count: state.count + state.selections[state.selections.length - 1],
       };
+    }
 
-    case actions.DECREASE_COUNT:
+    case actions.DECREASE_COUNT: {
       return {
         ...state,
         count: state.count - state.selections[state.selections.length - 1],
       };
+    }
 
-    case actions.SAVE_SELECT_VALUE:
+    case actions.SAVE_SELECT_VALUE: {
       return {
         ...state,
         selections: [...state.selections, action.payload.data],
       };
+    }
 
-    case actions.RESET_COUNT:
+    case actions.RESET_COUNT: {
       return {
         ...state,
         count: 0,
       };
+    }
 
-    case actions.LOADING:
+    case actions.LOADING: {
       return {
         ...state,
         loading: true,
@@ -49,29 +55,43 @@ const reducer = (state = defaultState, action) => {
         errorMessage: null,
         removeSelectedTasksSuccess: false,
         editTaskSuccess: false,
+        removeTaskSuccess: false,
       };
+    }
 
-    case actions.ERROR:
+    case actions.ERROR: {
       return {
         ...state,
         loading: false,
         errorMessage: action.payload.error,
         successMessage: false,
       };
+    }
 
-    case actions.API_CALL_SUCCESS:
-      const isDataBaseEmpty = action.payload.fetchedTasks.length
-        ? action.payload.success
-        : `💥 Data Base is Empty, nothing to fetch!`;
+    case actions.API_CALL_SUCCESS: {
+      const data = action.payload.fetchedData;
+      const isDataBaseEmpty =
+        data.length >= 1
+          ? action.payload.success
+          : `💥 Data Base is Empty, nothing to fetch!`;
 
       return {
         ...state,
         loading: false,
-        tasks: action.payload.fetchedTasks,
+        tasks: data,
         successMessage: isDataBaseEmpty,
       };
+    }
 
-    case actions.ADD_TASK_SUCCESS:
+    case actions.GET_SINGLE_TASK_SUCCESS: {
+      return {
+        ...state,
+        task: action.payload.singleTask,
+        loading: false,
+      };
+    }
+
+    case actions.ADD_TASK_SUCCESS: {
       const tasks = [...state.tasks, action.payload.data];
 
       return {
@@ -81,24 +101,37 @@ const reducer = (state = defaultState, action) => {
         successMessage: action.payload.success,
         addTaskSuccess: true,
       };
+    }
 
-    case actions.REMOVE_TASK_SUCCESS:
+    case actions.REMOVE_TASK_SUCCESS: {
+      const removeTaskCommonParams = {
+        ...state,
+        loading: false,
+        successMessage: action.payload.success,
+      };
       const isTaskExists = (task) =>
         task._id !== action.payload.removableTask._id;
       const updatedTasks = state.tasks.filter(isTaskExists);
 
-      return {
-        ...state,
-        loading: false,
-        tasks: updatedTasks,
-        successMessage: action.payload.success,
-      };
+      if (action.payload.from === `single`) {
+        return {
+          ...removeTaskCommonParams,
+          removeTaskSuccess: true,
+          tasks: updatedTasks,
+        };
+      } else {
+        return {
+          ...removeTaskCommonParams,
+          tasks: updatedTasks,
+        };
+      }
+    }
 
-    case actions.REMOVE_SELECTED_TASKS_SUCCESS:
-      let _tasks = [...state.tasks];
+    case actions.REMOVE_SELECTED_TASKS_SUCCESS: {
+      let tasks = [...state.tasks];
       const selectedtasksIds = action.payload.selectedTasksIds;
       selectedtasksIds.forEach(
-        (_id) => (_tasks = _tasks.filter((task) => task._id !== _id))
+        (_id) => (tasks = tasks.filter((task) => task._id !== _id))
       );
 
       let successMessageForTasks =
@@ -108,26 +141,38 @@ const reducer = (state = defaultState, action) => {
 
       return {
         ...state,
-        tasks: _tasks,
+        tasks,
         loading: false,
         successMessage: successMessageForTasks,
         removeSelectedTasksSuccess: true,
       };
+    }
 
-    case actions.SAVE_EDITED_TASK_SUCCESS:
-      let tasksClone = [...state.tasks];
-      const editedTask = action.payload.editedTask;
-      const isElementExists = (task) => task._id === editedTask._id;
-      const getTasktIndex = tasksClone.findIndex(isElementExists);
-      tasksClone[getTasktIndex] = editedTask;
-
-      return {
+    case actions.SAVE_EDITED_TASK_SUCCESS: {
+      const editTaskCommonParams = {
         ...state,
-        tasks: tasksClone,
         loading: false,
         editTaskSuccess: true,
         successMessage: action.payload.success,
       };
+      if (action.payload.from === `single`) {
+        return {
+          ...editTaskCommonParams,
+          task: action.payload.editedTask,
+        };
+      } else {
+        let tasks = [...state.tasks];
+        const editedTask = action.payload.editedTask;
+        const isElementExists = (task) => task._id === editedTask._id;
+        const getTasktIndex = tasks.findIndex(isElementExists);
+        tasks[getTasktIndex] = editedTask;
+
+        return {
+          ...editTaskCommonParams,
+          tasks,
+        };
+      }
+    }
 
     default:
       return state;

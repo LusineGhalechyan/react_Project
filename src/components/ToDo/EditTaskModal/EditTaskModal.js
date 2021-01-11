@@ -46,7 +46,7 @@ class EditTaskModal extends PureComponent {
       ...this.state,
       date: date.toISOString().slice(0, 10),
     };
-    saveEditedTaskMiddleWare(editedTasktoBackend);
+    saveEditedTaskMiddleWare(editedTasktoBackend, this.props.from);
   };
 
   render() {
@@ -105,6 +105,7 @@ class EditTaskModal extends PureComponent {
 EditTaskModal.propTypes = {
   editTask: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
+  from: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = {

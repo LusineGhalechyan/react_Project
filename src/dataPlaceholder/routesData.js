@@ -2,7 +2,7 @@ import ToDo from "../components/ToDo/pages/ToDo";
 import About from "../components/ToDo/pages/About/About";
 import SingleTask from "../components/ToDo/pages/SingleTask/SingleTask";
 import Contact from "../components/ToDo/pages/Contact/Contact";
-import NotFound from "../components/ToDo/pages/NotFound/NotFound";
+import NotFound from "../components/ToDo/pages/NotFound/NotFoundPage/NotFound";
 import Counter from "../components/ToDo/Counter/Counter";
 
 export const routesData = [

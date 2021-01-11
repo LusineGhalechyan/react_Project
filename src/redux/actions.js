@@ -24,18 +24,25 @@ const loading = () => ({
   type: actions.LOADING,
 });
 
-const apiCallSuccess = (fetchedTasks) => ({
-  type: actions.API_CALL_SUCCESS,
-  payload: {
-    fetchedTasks,
-    success: `🎉 Congratulations, Tasks fetched successfully !!!`,
-  },
-});
-
 const errorInfetchingData = () => ({
   type: actions.ERROR,
   payload: {
     error: `🚫 Failed to fetch data !`,
+  },
+});
+
+const apiCallSuccess = (fetchedData) => ({
+  type: actions.API_CALL_SUCCESS,
+  payload: {
+    fetchedData,
+    success: `🎉 Congratulations, Tasks fetched successfully !!!`,
+  },
+});
+
+const getSingleTaskSuccess = (singleTask) => ({
+  type: actions.GET_SINGLE_TASK_SUCCESS,
+  payload: {
+    singleTask,
   },
 });
 
@@ -47,10 +54,11 @@ const addNewTaskSuccess = (data) => ({
   },
 });
 
-const removeTaskSuccess = (removableTask) => ({
+const removeTaskSuccess = (removableTask, from) => ({
   type: actions.REMOVE_TASK_SUCCESS,
   payload: {
     removableTask,
+    from,
     success: `🎉 Task removed successfully !!!`,
   },
 });
@@ -63,14 +71,16 @@ const removeSelectedTasksSuccess = (selectedTasksIds) => ({
   },
 });
 
-const saveEditedTaskSuccess = (editedTask) => ({
+const saveEditedTaskSuccess = (editedTask, from) => ({
   type: actions.SAVE_EDITED_TASK_SUCCESS,
   payload: {
     editedTask,
+    from,
     success: `✍ Task edited successfully !!!`,
   },
 });
 
+// Universal Request MiddleWare action creator for fetching data
 const requestMiddleWare = (taskId) => async (dispatch) => {
   dispatch(loading());
   try {
@@ -79,7 +89,7 @@ const requestMiddleWare = (taskId) => async (dispatch) => {
       dispatch(apiCallSuccess(response));
     } else {
       const response = await api.getTasks(taskId);
-      dispatch(apiCallSuccess(response));
+      dispatch(getSingleTaskSuccess(response));
     }
   } catch (error) {
     dispatch(errorInfetchingData());
@@ -96,11 +106,11 @@ const addNewTaskMiddleWare = (newTaskToBackend) => async (dispatch) => {
   }
 };
 
-const removeTaskMiddleWare = (task) => async (dispatch) => {
+const removeTaskMiddleWare = (task, from) => async (dispatch) => {
   dispatch(loading());
   try {
     await api.removeTask(task._id);
-    dispatch(removeTaskSuccess(task));
+    dispatch(removeTaskSuccess(task, from));
   } catch (error) {
     dispatch(errorInfetchingData());
   }
@@ -118,11 +128,11 @@ const removeSelectedTasksMiddleWare = (selectedTasksIds) => async (
   }
 };
 
-const saveEditedTaskMiddleWare = (editedTask) => async (dispatch) => {
+const saveEditedTaskMiddleWare = (editedTask, from) => async (dispatch) => {
   dispatch(loading());
   try {
     const response = await api.saveEditedTask(editedTask);
-    dispatch(saveEditedTaskSuccess(response));
+    dispatch(saveEditedTaskSuccess(response, from));
   } catch (error) {
     dispatch(errorInfetchingData());
   }
