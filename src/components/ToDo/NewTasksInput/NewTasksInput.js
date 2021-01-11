@@ -3,6 +3,8 @@ import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { connect } from "react-redux";
+import { addNewTaskMiddleWare } from "../../../redux/actions";
 
 class NewTasksInput extends PureComponent {
   constructor(props) {
@@ -42,7 +44,6 @@ class NewTasksInput extends PureComponent {
 
   handleAddTask = () => {
     const { title, description, date } = this.state;
-    const { onAddTask } = this.props;
 
     if (!title) return false;
 
@@ -52,7 +53,7 @@ class NewTasksInput extends PureComponent {
       date: date.toISOString().slice(0, 10),
     };
 
-    onAddTask(newTaskToBackend);
+    this.props.addNewTaskMiddleWare(newTaskToBackend);
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -62,6 +63,7 @@ class NewTasksInput extends PureComponent {
   render() {
     const { onClose } = this.props;
     const { date } = this.state;
+
     const addTaskModalContent = (
       <>
         <InputGroup className="mb-4">
@@ -112,8 +114,10 @@ class NewTasksInput extends PureComponent {
 }
 
 NewTasksInput.propTypes = {
-  onAddTask: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default NewTasksInput;
+const mapDispatchToProps = {
+  addNewTaskMiddleWare,
+};
+export default connect(null, mapDispatchToProps)(NewTasksInput);
