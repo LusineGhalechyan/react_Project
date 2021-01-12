@@ -14,7 +14,6 @@ import NotFoundTask from "../NotFound/NotFoundPage/NotFoundTask/NotFoundTask";
 
 class SingleTask extends PureComponent {
   state = {
-    // task: null,
     editATask: !!null,
   };
 
