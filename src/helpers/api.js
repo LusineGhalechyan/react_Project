@@ -31,9 +31,9 @@ export const api = {
     return instance.patch(`${"/task/"}`, axiosPatchRequestValue);
   },
 
-  saveEditedTask(editedTaskId, editedTask) {
+  saveEditedTask(editedTask) {
     return instance
-      .put(`${"/task/"}${editedTaskId}`, editedTask)
+      .put(`${"/task/"}${editedTask._id}`, editedTask)
       .then((response) => response.data);
   },
 };

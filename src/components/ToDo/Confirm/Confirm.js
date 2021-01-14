@@ -27,7 +27,7 @@ const Confirm = (props) => {
   );
 };
 
-export default Confirm;
+export default React.memo(Confirm);
 
 Confirm.propTypes = {
   removableTasksCount: PropTypes.number.isRequired,

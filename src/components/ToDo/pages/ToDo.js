@@ -7,11 +7,10 @@ import Confirm from "../Confirm/Confirm";
 import EditTaskModal from "../EditTaskModal/EditTaskModal";
 import styles from "../NewTasksInput/NewTasksInput.module.scss";
 import ToDoImg from "../ToDoImg/ToDoImg";
-import Spinner from "../Spinner/Spinner";
-import { api } from "../../../helpers/api";
+import { baseURL } from "../../../helpers/baseURL";
 import { requestMiddleWare } from "../../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
-import { baseURL } from "../../../helpers/baseURL";
+import { removeSelectedTasksMiddleWare } from "../../../redux/actions";
 
 const ToDo = () => {
   const initialToDoState = {
@@ -23,25 +22,27 @@ const ToDo = () => {
 
   const [toDoState, setToDoState] = useState(initialToDoState);
   const dispatch = useDispatch();
+
   const tasks = useSelector((state) => state.tasks);
+  const addTaskSuccess = useSelector((state) => state.addTaskSuccess);
+  const removeSelectedTasksSuccess = useSelector(
+    (state) => state.removeSelectedTasksSuccess
+  );
+  const editTaskSuccess = useSelector((state) => state.editTaskSuccess);
 
   useEffect(() => {
     dispatch(requestMiddleWare());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseURL]);
 
-  const handleAddTask = (newTaskToBackend) => {
-    api
-      .postTask(newTaskToBackend)
-      .then((response) => {
-        setToDoState({
-          ...toDoState,
-          tasks: [...toDoState.tasks, response],
-          openNewTaskModal: false,
-        });
-      })
-      .catch((error) => console.log(error, "Failed to fetch data"));
-  };
+  useEffect(() => {
+    addTaskSuccess && toggleNewTaskModal();
+    removeSelectedTasksSuccess &&
+      setToDoState({ showConfirm: false, selectedTasksIds: new Set() });
+    editTaskSuccess &&
+      setToDoState({ editTask: null, selectedTasksIds: new Set() });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addTaskSuccess, removeSelectedTasksSuccess, editTaskSuccess]);
 
   const handleCheck = (taskId) => {
     const { selectedTasksIds } = toDoState;
@@ -58,45 +59,9 @@ const ToDo = () => {
     });
   };
 
-  const removeTask = (task) => {
-    const { tasks } = toDoState;
-
-    api
-      .removeTask(`${task._id}`)
-      .then(() => {
-        const filteredTasks = tasks.filter((t) => t._id !== task._id);
-
-        setToDoState({
-          ...toDoState,
-          tasks: filteredTasks,
-        });
-      })
-      .catch((error) => console.log(error));
-  };
-
   const removeSelectedTasks = () => {
-    let { selectedTasksIds } = toDoState;
-    let tasks = [...toDoState.tasks];
-
-    const axiosPatchRequestValue = {
-      tasks: [...selectedTasksIds],
-    };
-
-    api
-      .removeSelectedTasks(axiosPatchRequestValue)
-      .then(() => {
-        selectedTasksIds.forEach((_id) => {
-          tasks = tasks.filter((t) => t._id !== _id);
-        });
-
-        setToDoState({
-          ...toDoState,
-          tasks,
-          selectedTasksIds: new Set(),
-          showConfirm: false,
-        });
-      })
-      .catch((error) => console.log(error));
+    const { selectedTasksIds } = toDoState;
+    dispatch(removeSelectedTasksMiddleWare(selectedTasksIds));
   };
 
   const toggleConfirm = () => {
@@ -111,24 +76,6 @@ const ToDo = () => {
       ...toDoState,
       editTask: task,
     });
-  };
-
-  const saveTask = (editedTask) => {
-    api
-      .saveEditedTask(`${editedTask._id}`, editedTask)
-      .then((response) => {
-        const tasks = [...toDoState.tasks];
-        const isElementExists = (task) => task._id === editedTask._id;
-        const getTasktIndex = tasks.findIndex(isElementExists);
-        tasks[getTasktIndex] = response;
-
-        setToDoState({
-          ...toDoState,
-          tasks,
-          editTask: null,
-        });
-      })
-      .catch((error) => console.log(error));
   };
 
   const toggleNewTaskModal = () => {
@@ -151,7 +98,6 @@ const ToDo = () => {
         <Col key={task._id} xs={12} md={4}>
           <Task
             task={task}
-            onRemove={removeTask}
             onCheck={handleCheck}
             onEdit={toggleEditModal}
             disabled={selectedTasksIds.size}
@@ -187,7 +133,7 @@ const ToDo = () => {
             </Button>
           </Col>
         </Row>
-        {!tasks.length ? <Spinner /> : addTasks}
+        {addTasks}
       </Container>
       {showConfirm && (
         <Confirm
@@ -199,15 +145,12 @@ const ToDo = () => {
       {!!editTask && (
         <EditTaskModal
           editTask={editTask}
-          onSave={saveTask}
           onClose={() => toggleEditModal(null)}
         />
       )}
-      {openNewTaskModal && (
-        <NewTasksInput onAddTask={handleAddTask} onClose={toggleNewTaskModal} />
-      )}
+      {openNewTaskModal && <NewTasksInput onClose={toggleNewTaskModal} />}
     </>
   );
 };
 
-export default ToDo;
+export default React.memo(ToDo);

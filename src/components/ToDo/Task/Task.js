@@ -6,6 +6,8 @@ import styles from "./Task.module.scss";
 import PropTypes from "prop-types";
 import { formatDate } from "../../../helpers/utils";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { removeTaskMiddleWare } from "../../../redux/actions";
 
 class Task extends PureComponent {
   state = {
@@ -69,7 +71,7 @@ class Task extends PureComponent {
           <Button
             variant="danger"
             disabled={disabled}
-            onClick={() => this.props.onRemove(task)}
+            onClick={() => this.props.removeTaskMiddleWare(task)}
             className={styles.buttonDanger}
           >
             <FontAwesomeIcon icon={faTrash} />
@@ -82,9 +84,13 @@ class Task extends PureComponent {
 
 Task.propTypes = {
   task: PropTypes.object.isRequired,
-  onRemove: PropTypes.func.isRequired,
   onCheck: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
   disabled: PropTypes.number.isRequired,
 };
 
-export default Task;
+const mapDispatchToProps = {
+  removeTaskMiddleWare,
+};
+
+export default connect(null, mapDispatchToProps)(Task);
