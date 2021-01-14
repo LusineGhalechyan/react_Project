@@ -1,7 +1,29 @@
 .Toastify__toast--error {
-    background: #E87C87 !important;
+  background: #e87c87 !important;
 }
 
-// .Toastify__toast--success {
-//     background: #4CDAED !important;
-// }
+.btn-warning {
+  color: #212529;
+  background-color: #4cdaed !important;
+  border-color: #4cdaed !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2fbd17;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #4cdaed;
+}

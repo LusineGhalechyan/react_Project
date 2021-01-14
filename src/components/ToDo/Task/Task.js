@@ -29,10 +29,6 @@ class Task extends PureComponent {
     onCheck(task._id);
   };
 
-  componentDidUpdate(prevProps) {
-    if (typeof prevProps === "object") return false;
-  }
-
   render() {
     const { task, disabled, onEdit } = this.props;
     const { className } = this.state;

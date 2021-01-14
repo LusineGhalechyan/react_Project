@@ -9,9 +9,23 @@ const instance = axios.create({
 });
 
 export const api = {
-  getTasks(taskId) {
-    if (!taskId)
-      return instance.get(`${"/task"}`).then((response) => response.data);
+  getTasks(taskId, data = {}) {
+    let query = `?`;
+
+    for (let key in data) {
+      let value = data[key];
+      query = `${query}${key}=${value}&`;
+    }
+
+    if (query === `?`) {
+      query = ``;
+    }
+
+    if (!taskId && data) {
+      return instance
+        .get(`${"/task"}${query}`)
+        .then((response) => response.data);
+    }
     return instance
       .get(`${"/task/"}${taskId}`)
       .then((response) => response.data);

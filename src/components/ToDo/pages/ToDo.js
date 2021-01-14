@@ -11,6 +11,7 @@ import { baseURL } from "../../../helpers/baseURL";
 import { requestMiddleWare } from "../../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { removeSelectedTasksMiddleWare } from "../../../redux/actions";
+import SearchBox from "../SearchBox/SearchBox";
 
 const ToDo = () => {
   const initialToDoState = {
@@ -23,12 +24,20 @@ const ToDo = () => {
   const [toDoState, setToDoState] = useState(initialToDoState);
   const dispatch = useDispatch();
 
-  const tasks = useSelector((state) => state.tasks);
-  const addTaskSuccess = useSelector((state) => state.addTaskSuccess);
-  const removeSelectedTasksSuccess = useSelector(
-    (state) => state.removeSelectedTasksSuccess
-  );
-  const editTaskSuccess = useSelector((state) => state.editTaskSuccess);
+  const state = useSelector((state) => {
+    return {
+      tasks: state.tasks,
+      addTaskSuccess: state.addTaskSuccess,
+      editTaskSuccess: state.editTaskSuccess,
+      removeSelectedTasksSuccess: state.removeSelectedTasksSuccess,
+    };
+  });
+  const {
+    tasks,
+    addTaskSuccess,
+    editTaskSuccess,
+    removeSelectedTasksSuccess,
+  } = state;
 
   useEffect(() => {
     dispatch(requestMiddleWare());
@@ -108,7 +117,10 @@ const ToDo = () => {
   );
   return (
     <>
-      <ToDoImg />
+      <nav className="navbar">
+        <ToDoImg />
+        <SearchBox />
+      </nav>
       <ArmFlag />
       <Container>
         <Row className="justify-content-center text-center">

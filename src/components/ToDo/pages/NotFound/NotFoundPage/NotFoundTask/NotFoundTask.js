@@ -13,12 +13,12 @@ const NotFoundTask = () => {
       </div>
 
       <div className={styles.deconstructed}>
-        No TASK FOUND
-        <div>No TASK FOUND </div>
-        <div>No TASK FOUND </div>
-        <div>No TASK FOUND </div>
-        <div>No TASK FOUND </div>
-        <div className={styles.textColor}>No TASK FOUND</div>
+        NO TASK FOUND
+        <div>NO TASK FOUND </div>
+        <div>NO TASK FOUND </div>
+        <div>NO TASK FOUND </div>
+        <div>NO TASK FOUND </div>
+        <div className={styles.textColor}>NO TASK FOUND</div>
       </div>
     </>
   );

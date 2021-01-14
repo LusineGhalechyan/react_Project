@@ -7,20 +7,19 @@ import { formatDate } from "../../../../helpers/utils";
 import EditTaskModal from "../../EditTaskModal/EditTaskModal";
 import { connect } from "react-redux";
 import {
-  requestMiddleWare,
+  requestSingleTaskMiddleWare,
   removeTaskMiddleWare,
 } from "../../../../redux/actions";
 import NotFoundTask from "../NotFound/NotFoundPage/NotFoundTask/NotFoundTask";
 
 class SingleTask extends PureComponent {
   state = {
-    // task: null,
     editATask: !!null,
   };
 
   componentDidMount() {
     const taskId = this.props.match.params.id;
-    this.props.requestMiddleWare(taskId);
+    this.props.requestSingleTaskMiddleWare(taskId);
   }
 
   componentDidUpdate(prevProps) {
@@ -55,7 +54,7 @@ class SingleTask extends PureComponent {
             <Card className={styles.singleTaskCardContainer}>
               <Card.Body>
                 <Card.Title className={styles.singleTaskCardTitle}>
-                  Task Title: {task.title.slice(0, 5) + "..."}
+                  Task Title: {task.title.slice(0, 10) + "..."}
                 </Card.Title>
                 <Card.Text className={styles.singleTaskCardText}>
                   <strong>Description: </strong>
@@ -109,7 +108,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  requestMiddleWare,
+  requestSingleTaskMiddleWare,
   removeTaskMiddleWare,
 };
 
