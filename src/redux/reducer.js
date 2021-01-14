@@ -70,9 +70,8 @@ const reducer = (state = defaultState, action) => {
 
     case actions.API_CALL_SUCCESS: {
       const data = action.payload.fetchedData;
-      const isDataBaseEmpty = data.length
-        ? action.payload.success
-        : `💥 Data Base is Empty, nothing to fetch!`;
+      const isDataBaseEmpty =
+        !data.length && `💥 Data Base is Empty, nothing to fetch!`;
 
       return {
         ...state,
@@ -115,6 +114,7 @@ const reducer = (state = defaultState, action) => {
       if (action.payload.from === `single`) {
         return {
           ...removeTaskCommonParams,
+          task: null,
           removeTaskSuccess: true,
         };
       } else {
