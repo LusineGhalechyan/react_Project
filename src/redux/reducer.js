@@ -60,9 +60,9 @@ const reducer = (state = defaultState, action) => {
       };
 
     case actions.API_CALL_SUCCESS:
-      const isDataBaseEmpty = action.payload.fetchedTasks.length
-        ? action.payload.success
-        : `💥 Data Base is Empty, nothing to fetch!`;
+      const isDataBaseEmpty =
+        !action.payload.fetchedTasks.length &&
+        `💥 Data Base is Empty, nothing to fetch!`;
 
       return {
         ...state,

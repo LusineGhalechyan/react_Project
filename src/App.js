@@ -10,20 +10,14 @@ import { useSelector } from "react-redux";
 import Spinner from "./components/ToDo/Spinner/Spinner";
 
 function App() {
-  const error = useSelector((state) => state.errorMessage);
-  const success = useSelector((state) => state.successMessage);
-  const loading = useSelector((state) => state.loading);
-
-  // let state = (({ state }) => ({ error, success, loading }))(state);
-
-  // const state = useSelector((state) => {
-  //   return {
-  //     error: state.errorMessage,
-  //     success: state.successMessage,
-  //     loading: state.loading,
-  //   };
-  // });
-  // const { error, success, loading } = state;
+  const state = useSelector((state) => {
+    return {
+      error: state.errorMessage,
+      success: state.successMessage,
+      loading: state.loading,
+    };
+  });
+  const { error, success, loading } = state;
 
   const displayMessage = (error, success) => {
     if (error) return toast.error(error);
