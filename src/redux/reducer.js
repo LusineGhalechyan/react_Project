@@ -115,6 +115,8 @@ const reducer = (state = defaultState, action) => {
     }
 
     case actions.SAVE_EDITED_TASK_SUCCESS: {
+      const editedTask = action.payload.editedTask;
+
       const editTaskCommonParams = {
         ...state,
         loading: false,
@@ -124,11 +126,10 @@ const reducer = (state = defaultState, action) => {
       if (action.payload.from === `single`) {
         return {
           ...editTaskCommonParams,
-          task: action.payload.editedTask,
+          task: editedTask,
         };
       } else {
         let tasks = [...state.tasks];
-        const editedTask = action.payload.editedTask;
         const isElementExists = (task) => task._id === editedTask._id;
         const getTasktIndex = tasks.findIndex(isElementExists);
         tasks[getTasktIndex] = editedTask;

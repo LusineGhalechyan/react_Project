@@ -131,13 +131,12 @@ const saveEditedTaskMiddleWare = (editedTask, from) => async (dispatch) => {
   }
 };
 
-const changeTaskStatusMiddleWare = (editedTask, status, from) => async (
+const changeTasksStatusMiddleWare = (editedTask, status, from) => async (
   dispatch
 ) => {
   dispatch(loading());
   try {
     const response = await api.saveEditedTask(editedTask, status);
-    console.log("response", response);
     dispatch(changeTaskStatus(response, from, status));
   } catch (error) {
     dispatch(errorInfetchingData());
@@ -154,5 +153,5 @@ export {
   removeTaskMiddleWare,
   removeSelectedTasksMiddleWare,
   saveEditedTaskMiddleWare,
-  changeTaskStatusMiddleWare,
+  changeTasksStatusMiddleWare,
 };

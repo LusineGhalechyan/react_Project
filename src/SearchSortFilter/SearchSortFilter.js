@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./SearchSortFilter.module.scss";
-import { Navbar, Nav, NavDropdown, Form, Button } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
@@ -115,29 +115,12 @@ const SearchSortFilter = (props) => {
               </NavDropdown>
             </Nav>
 
-            <Form inline>
-              <input
-                type="search"
-                placeholder="Search..."
-                className="mr-3 mt-2"
-                value={search}
-                onChange={handleChange}
-                onKeyDown={handleOnKeyDown}
-              />
-
-              <Button
-                variant="outline-success"
-                onClick={handleSubmit}
-                className={`${styles.searchButton} mt-2`}
-              >
-                Search
-              </Button>
-            </Form>
-            {/* <SearchBox
+            <SearchBox
               value={search}
               onChange={handleChange}
               onKeyDown={handleOnKeyDown}
-            /> */}
+              onSubmit ={handleSubmit}
+            />
           </Navbar.Collapse>
         </Navbar>
 

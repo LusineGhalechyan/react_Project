@@ -1,6 +1,8 @@
-// .searchBoxContainer {
-//   margin: 0 40px 0;
-// }
+$inputSearchFocus: 430px !important;
+
+.searchBoxContainer {
+  margin: 0 40px 0;
+}
 
 .searchButton {
   color: #2fbd17 !important;
@@ -40,7 +42,7 @@ input[type="search"] {
   transition: all 0.5s;
 }
 input[type="search"]:focus {
-  width: 430px !important;
+  width: $inputSearchFocus;
   background-color: #fff;
   border-color: #66cc75;
 

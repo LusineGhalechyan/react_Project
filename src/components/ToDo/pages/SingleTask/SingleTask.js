@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import {
   requestSingleTaskMiddleWare,
   removeTaskMiddleWare,
-  changeTaskStatusMiddleWare,
+  changeTasksStatusMiddleWare,
 } from "../../../../redux/actions";
 import NotFoundTask from "../NotFound/NotFoundPage/NotFoundTask/NotFoundTask";
 
@@ -69,11 +69,15 @@ class SingleTask extends PureComponent {
                     : `Task's description isn't mentioned !`}
                 </Card.Text>
 
-                  <Card.Text 
-                  className={styles.singleTaskCardStatusActive}
-                  >
+                <Card.Text
+                  className={
+                    task.status === "active"
+                      ? `${styles.singleTaskCardTextStatusActive}`
+                      : `${styles.singleTaskCardTextStatusDone}`
+                  }
+                >
                   <strong> Status: {task.status}</strong>
-                  </Card.Text>
+                </Card.Text>
 
                 <Card.Text className={styles.singleTaskCardText}>
                   <strong> Date: </strong>
@@ -85,16 +89,14 @@ class SingleTask extends PureComponent {
                   <strong>Created_at: </strong> {formatDate(task.created_at)}
                 </Card.Text>
 
-
-
-               {task.status === "active" ? (
+                {task.status === "active" ? (
                   <Button
                     variant="success"
                     onClick={() =>
-                      this.props.changeTaskStatusMiddleWare(
+                      this.props.changeTasksStatusMiddleWare(
                         task,
                         { status: "done" },
-                        "tasks"
+                        "single"
                       )
                     }
                     className={`${styles.singleTaskButtonStatusActive}`}
@@ -105,22 +107,18 @@ class SingleTask extends PureComponent {
                   <Button
                     variant="warning"
                     onClick={() =>
-                      this.props.changeTaskStatusMiddleWare(
+                      this.props.changeTasksStatusMiddleWare(
                         task,
                         { status: "active" },
-                        "tasks"
+                        "single"
                       )
                     }
                     className={`${styles.singleTaskButtonStatusDone}`}
                   >
                     <FontAwesomeIcon icon={faHistory} />
                   </Button>
-          )}
-               
-               
-               
-               
-               
+                )}
+
                 <Button
                   variant="warning"
                   onClick={this.toggleEditModal}
@@ -160,7 +158,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   requestSingleTaskMiddleWare,
   removeTaskMiddleWare,
-  changeTaskStatusMiddleWare,
+  changeTasksStatusMiddleWare,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleTask);

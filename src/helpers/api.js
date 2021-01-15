@@ -50,7 +50,8 @@ export const api = {
       return instance
         .put(`${"/task/"}${editedTask._id}`, editedTask)
         .then((response) => response.data);
-    } else if (editedTask && status) {
+    }
+    if (editedTask && status) {
       return instance
         .put(`${"/task/"}${editedTask._id}`, status)
         .then((response) => response.data);

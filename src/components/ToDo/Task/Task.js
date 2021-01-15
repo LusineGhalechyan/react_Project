@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   removeTaskMiddleWare,
-  changeTaskStatusMiddleWare,
+  changeTasksStatusMiddleWare,
 } from "../../../redux/actions";
 import { trimString } from "../../../helpers/trimString";
 
@@ -41,11 +41,7 @@ class Task extends PureComponent {
 
   render() {
     const { task, disabled, onEdit } = this.props;
-    const { className, taskStatusClassName } = this.state;
-    task.status === "active" &&
-      this.setState({ taskStatusClassName: "cardTextStatusActive" });
-    task.status === "done" &&
-      this.setState({ taskStatusClassName: "cardTextStatusDone" });
+    const { className } = this.state;
 
     return (
       <Card className={`${styles[className]} mb-3`}>
@@ -64,8 +60,13 @@ class Task extends PureComponent {
             <strong>Description: </strong>
             {task.description}
           </Card.Text>
-          <Card.Text className={styles[taskStatusClassName]}>
-          {/* <Card.Text className={styles.cardTextStatusActive}> */}
+          <Card.Text
+            className={
+              task.status === "active"
+                ? `${styles.cardTextStatusActive}`
+                : `${styles.cardTextStatusDone}`
+            }
+          >
             <strong> Status: {task.status}</strong>
           </Card.Text>
           <Card.Text className={styles.cardTextDate}>
@@ -79,7 +80,7 @@ class Task extends PureComponent {
               variant="success"
               disabled={disabled}
               onClick={() =>
-                this.props.changeTaskStatusMiddleWare(
+                this.props.changeTasksStatusMiddleWare(
                   task,
                   { status: "done" },
                   "tasks"
@@ -94,7 +95,7 @@ class Task extends PureComponent {
               variant="warning"
               disabled={disabled}
               onClick={() =>
-                this.props.changeTaskStatusMiddleWare(
+                this.props.changeTasksStatusMiddleWare(
                   task,
                   { status: "active" },
                   "tasks"
@@ -118,7 +119,6 @@ class Task extends PureComponent {
             variant="danger"
             disabled={disabled}
             onClick={() => this.props.removeTaskMiddleWare(task)}
-            // className={styles.buttonDanger}
           >
             <FontAwesomeIcon icon={faTrash} />
           </Button>
@@ -137,7 +137,7 @@ Task.propTypes = {
 
 const mapDispatchToProps = {
   removeTaskMiddleWare,
-  changeTaskStatusMiddleWare,
+  changeTasksStatusMiddleWare,
 };
 
 export default connect(null, mapDispatchToProps)(Task);

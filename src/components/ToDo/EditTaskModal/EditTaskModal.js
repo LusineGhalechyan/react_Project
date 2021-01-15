@@ -46,7 +46,7 @@ class EditTaskModal extends PureComponent {
       ...this.state,
       date: date.toISOString().slice(0, 10),
     };
-    saveEditedTaskMiddleWare(editedTasktoBackend, null, this.props.from);
+    saveEditedTaskMiddleWare(editedTasktoBackend, this.props.from);
   };
 
   render() {
