@@ -10,6 +10,22 @@
     color: #007bff;
   }
 
+  .singleTaskCardStatusActive {
+    color: #f7978c;
+  }
+
+  .singleTaskButtonStatusActive {
+    background-color: #c724b1 !important;
+    &:hover {
+      background-color: #c724b1 !important;
+    }
+  }
+  
+  .singleTaskButtonStatusDone {
+    // color: #fff !important  ;
+    background-color: #2bbc19 !important;
+  }
+
   .singleTaskCardText {
     color: #52527a;
   }

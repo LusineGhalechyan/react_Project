@@ -140,6 +140,35 @@ const reducer = (state = defaultState, action) => {
       }
     }
 
+    case actions.CHANGE_TASK_STATUS_SUCCESS: {
+      const editedTask = action.payload.editedTask;
+      const changeTaskStatusCommonParams = {
+        ...state,
+        loading: false,
+        editTaskSuccess: true,
+        successMessage:
+          editedTask.status === "done"
+            ? `🎀 Congratulations, You have completed the task !!!`
+            : `📝 The task is active now !`,
+      };
+      if (action.payload.from === `single`) {
+        return {
+          ...changeTaskStatusCommonParams,
+          task: editedTask,
+        };
+      } else {
+        let tasks = [...state.tasks];
+        const isElementExists = (task) => task._id === editedTask._id;
+        const getTasktIndex = tasks.findIndex(isElementExists);
+        tasks[getTasktIndex] = editedTask;
+
+        return {
+          ...changeTaskStatusCommonParams,
+          tasks,
+        };
+      }
+    }
+
     default:
       return state;
   }

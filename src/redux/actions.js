@@ -60,6 +60,15 @@ const saveEditedTaskSuccess = (editedTask, from) => ({
   },
 });
 
+const changeTaskStatus = (editedTask, from, status) => ({
+  type: actions.CHANGE_TASK_STATUS_SUCCESS,
+  payload: {
+    editedTask,
+    from,
+    status,
+  },
+});
+
 const requestMiddleWare = (data) => async (dispatch) => {
   dispatch(loading());
   try {
@@ -115,8 +124,21 @@ const removeSelectedTasksMiddleWare = (selectedTasksIds) => async (
 const saveEditedTaskMiddleWare = (editedTask, from) => async (dispatch) => {
   dispatch(loading());
   try {
-    const response = await api.saveEditedTask(editedTask);
+    const response = await api.saveEditedTask(editedTask, null);
     dispatch(saveEditedTaskSuccess(response, from));
+  } catch (error) {
+    dispatch(errorInfetchingData());
+  }
+};
+
+const changeTaskStatusMiddleWare = (editedTask, status, from) => async (
+  dispatch
+) => {
+  dispatch(loading());
+  try {
+    const response = await api.saveEditedTask(editedTask, status);
+    console.log("response", response);
+    dispatch(changeTaskStatus(response, from, status));
   } catch (error) {
     dispatch(errorInfetchingData());
   }
@@ -132,4 +154,5 @@ export {
   removeTaskMiddleWare,
   removeSelectedTasksMiddleWare,
   saveEditedTaskMiddleWare,
+  changeTaskStatusMiddleWare,
 };

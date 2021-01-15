@@ -1,6 +1,27 @@
+button {
+  color: #fff !important;
+}
+
+.buttonStatusActive {
+  background-color: #c724b1 !important;
+  &:hover {
+    background-color: #c724b1 !important;
+  }
+}
+
+.buttonStatusDone {
+  // color: #fff !important  ;
+  background-color: #2bbc19 !important;
+}
+
 .buttonWarning {
-  color: #fff;
+  // color: #fff;
   margin: 10px;
+}
+
+.buttonStatus {
+  // color: #fff;
+  // margin: 10px;
 }
 
 .selected {
@@ -16,6 +37,15 @@
 .cardTextDate {
   font-size: small;
   color: #52527a;
+}
+
+.cardTextStatusActive {
+  color: #f7978c;
+  // color: #c724b1;
+}
+
+.cardTextStatusDone {
+  color: #2bbe19;
 }
 
 .limitTextLength {

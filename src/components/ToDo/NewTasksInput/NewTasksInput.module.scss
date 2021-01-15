@@ -2,4 +2,8 @@
   font-weight: 500;
   background-color: #4fc3f7;
   border: 1px solid #ff4d94;
+  &:hover {
+    background-color: #4fc3f7 !important;
+    border: none !important;
+  }
 }

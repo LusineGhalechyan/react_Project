@@ -1,7 +1,12 @@
 import React, { PureComponent } from "react";
 import { Card, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrash,
+  faEdit,
+  faCheck,
+  faHistory,
+} from "@fortawesome/free-solid-svg-icons";
 import styles from "./SingleTask.module.scss";
 import { formatDate } from "../../../../helpers/utils";
 import EditTaskModal from "../../EditTaskModal/EditTaskModal";
@@ -9,6 +14,7 @@ import { connect } from "react-redux";
 import {
   requestSingleTaskMiddleWare,
   removeTaskMiddleWare,
+  changeTaskStatusMiddleWare,
 } from "../../../../redux/actions";
 import NotFoundTask from "../NotFound/NotFoundPage/NotFoundTask/NotFoundTask";
 
@@ -54,7 +60,7 @@ class SingleTask extends PureComponent {
             <Card className={styles.singleTaskCardContainer}>
               <Card.Body>
                 <Card.Title className={styles.singleTaskCardTitle}>
-                  Task Title: {task.title.slice(0, 10) + "..."}
+                  Task Title: {task.title}
                 </Card.Title>
                 <Card.Text className={styles.singleTaskCardText}>
                   <strong>Description: </strong>
@@ -62,6 +68,13 @@ class SingleTask extends PureComponent {
                     ? task.description
                     : `Task's description isn't mentioned !`}
                 </Card.Text>
+
+                  <Card.Text 
+                  className={styles.singleTaskCardStatusActive}
+                  >
+                  <strong> Status: {task.status}</strong>
+                  </Card.Text>
+
                 <Card.Text className={styles.singleTaskCardText}>
                   <strong> Date: </strong>
                   {!!task.date
@@ -71,6 +84,43 @@ class SingleTask extends PureComponent {
                 <Card.Text className={styles.singleTaskCardText}>
                   <strong>Created_at: </strong> {formatDate(task.created_at)}
                 </Card.Text>
+
+
+
+               {task.status === "active" ? (
+                  <Button
+                    variant="success"
+                    onClick={() =>
+                      this.props.changeTaskStatusMiddleWare(
+                        task,
+                        { status: "done" },
+                        "tasks"
+                      )
+                    }
+                    className={`${styles.singleTaskButtonStatusActive}`}
+                  >
+                    <FontAwesomeIcon icon={faCheck} />
+                  </Button>
+                ) : (
+                  <Button
+                    variant="warning"
+                    onClick={() =>
+                      this.props.changeTaskStatusMiddleWare(
+                        task,
+                        { status: "active" },
+                        "tasks"
+                      )
+                    }
+                    className={`${styles.singleTaskButtonStatusDone}`}
+                  >
+                    <FontAwesomeIcon icon={faHistory} />
+                  </Button>
+          )}
+               
+               
+               
+               
+               
                 <Button
                   variant="warning"
                   onClick={this.toggleEditModal}
@@ -110,6 +160,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   requestSingleTaskMiddleWare,
   removeTaskMiddleWare,
+  changeTaskStatusMiddleWare,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleTask);
