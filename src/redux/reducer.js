@@ -82,8 +82,12 @@ const reducer = (state = defaultState, action) => {
       if (action.payload.from === `single`) {
         return {
           ...removeTaskCommonParams,
-          removeTaskSuccess: true,
           task: null,
+          removeTaskSuccess: true,
+<<<<<<< HEAD
+          task: null,
+=======
+>>>>>>> 7e7ebcd8f756cdffded8f96b3259a41f01c71307
         };
       } else {
         return {
