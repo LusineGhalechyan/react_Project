@@ -1,25 +1,6 @@
 import * as actions from "./actionTypes";
 import { api } from "../helpers/api";
 
-const increaseCount = () => ({
-  type: actions.INCREASE_COUNT,
-});
-
-const decreaseCount = () => ({
-  type: actions.DECREASE_COUNT,
-});
-
-const saveSelectValue = (data) => ({
-  type: actions.SAVE_SELECT_VALUE,
-  payload: {
-    data,
-  },
-});
-
-const resetCount = () => ({
-  type: actions.RESET_COUNT,
-});
-
 const loading = () => ({
   type: actions.LOADING,
 });
@@ -35,7 +16,6 @@ const apiCallSuccess = (fetchedData) => ({
   type: actions.API_CALL_SUCCESS,
   payload: {
     fetchedData,
-    success: `🎉 Congratulations, Tasks fetched successfully !!!`,
   },
 });
 
@@ -80,17 +60,21 @@ const saveEditedTaskSuccess = (editedTask, from) => ({
   },
 });
 
-// Universal Request MiddleWare action creator for fetching data
-const requestMiddleWare = (taskId) => async (dispatch) => {
+const requestMiddleWare = (data) => async (dispatch) => {
   dispatch(loading());
   try {
-    if (!taskId) {
-      const response = await api.getTasks();
-      dispatch(apiCallSuccess(response));
-    } else {
-      const response = await api.getTasks(taskId);
-      dispatch(getSingleTaskSuccess(response));
-    }
+    const response = await api.getTasks(null, data);
+    dispatch(apiCallSuccess(response));
+  } catch (error) {
+    dispatch(errorInfetchingData());
+  }
+};
+
+const requestSingleTaskMiddleWare = (taskId) => async (dispatch) => {
+  dispatch(loading());
+  try {
+    const response = await api.getTasks(taskId);
+    dispatch(getSingleTaskSuccess(response));
   } catch (error) {
     dispatch(errorInfetchingData());
   }
@@ -139,14 +123,11 @@ const saveEditedTaskMiddleWare = (editedTask, from) => async (dispatch) => {
 };
 
 export {
-  increaseCount,
-  decreaseCount,
-  saveSelectValue,
-  resetCount,
   loading,
   apiCallSuccess,
   errorInfetchingData,
   requestMiddleWare,
+  requestSingleTaskMiddleWare,
   addNewTaskMiddleWare,
   removeTaskMiddleWare,
   removeSelectedTasksMiddleWare,

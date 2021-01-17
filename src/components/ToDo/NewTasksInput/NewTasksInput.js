@@ -56,10 +56,6 @@ class NewTasksInput extends PureComponent {
     this.props.addNewTaskMiddleWare(newTaskToBackend);
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.title.length + 1) return false;
-  }
-
   render() {
     const { onClose } = this.props;
     const { date } = this.state;

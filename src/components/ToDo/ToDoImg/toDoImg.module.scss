@@ -1,8 +1,11 @@
 .toDoimg {
-  top: 20px;
-  left: 20px;
   width: 15%;
   height: 15%;
-  margin-top: 50px;
-  position: relative;
+  margin: 70px 0 0;
+}
+
+@media (max-width: 1390px) {
+  .toDoimg {
+    margin: 55px auto 0;
+  }
 }

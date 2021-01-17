@@ -40,14 +40,6 @@ const NavMenu = () => {
           >
             Contact
           </NavLink>
-          <NavLink
-            to="/counter"
-            exact
-            className={styles.navLink}
-            activeClassName={styles.activePage}
-          >
-            Counter
-          </NavLink>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
