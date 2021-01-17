@@ -52,6 +52,7 @@ class EditTaskModal extends PureComponent {
   render() {
     const { onClose } = this.props;
     const { title, description, date } = this.state;
+
     const editTaskModalContent = (
       <>
         <InputGroup className="mb-4">

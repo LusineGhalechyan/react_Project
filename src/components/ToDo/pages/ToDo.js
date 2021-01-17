@@ -11,7 +11,7 @@ import { baseURL } from "../../../helpers/baseURL";
 import { requestMiddleWare } from "../../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { removeSelectedTasksMiddleWare } from "../../../redux/actions";
-import SearchSortFilter from "../../../SearchSortFilter/SearchSortFilter";
+import SearchSortFilter from "../SearchSortFilter/SearchSortFilter";
 
 const ToDo = () => {
   const initialToDoState = {

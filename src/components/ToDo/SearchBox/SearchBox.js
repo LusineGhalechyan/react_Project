@@ -9,7 +9,7 @@ const SearchBox = (props) => {
         <input
           type="search"
           placeholder="Search..."
-          className="mr-3 mt-2"
+          className="mr-3"
           value={props.value}
           onChange={props.onChange}
           onKeyDown={props.onKeyDown}
@@ -18,7 +18,7 @@ const SearchBox = (props) => {
         <Button
           variant="outline-success"
           onClick={props.onSubmit}
-          className={`${styles.searchButton} mt-2`}
+          className={`${styles.searchButton}`}
         >
           Search
         </Button>

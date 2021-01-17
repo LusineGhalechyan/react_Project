@@ -1,16 +1,20 @@
 {
   "name": "create-bitschool-app",
   "version": "0.1.0",
+  "author": "Lusine Ghalechyan",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.2",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.12",
+    "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
+    "formik": "^2.2.6",
     "node-sass": "^4.14.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
@@ -23,8 +27,8 @@
     "react-scripts": "3.4.3",
     "react-toastify": "^6.2.0",
     "redux": "^4.0.5",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.32.8"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,5 +50,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8",
+    "redux-logger": "^3.0.6"
   }
 }

@@ -4,9 +4,9 @@ import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
-import { requestMiddleWare } from "../redux/actions";
-import { jsDateformatter } from "../helpers/utils";
-import SearchBox from "../components/ToDo/SearchBox/SearchBox";
+import { requestMiddleWare } from "../../../redux/actions";
+import { jsDateformatter } from "../../../helpers/utils";
+import SearchBox from "../SearchBox/SearchBox";
 
 const statusOptions = [
   { label: "Reset", value: "" },
@@ -76,7 +76,7 @@ const SearchSortFilter = (props) => {
 
   return (
     <>
-      <div className={styles.searchBoxContainer}>
+      <div className={styles._searchBoxContainer}>
         <Navbar bg="light" expand="lg">
           <Navbar.Brand className={styles.searchBoxNavDropdown}>
             Search/Sort/Filter
@@ -119,7 +119,7 @@ const SearchSortFilter = (props) => {
               value={search}
               onChange={handleChange}
               onKeyDown={handleOnKeyDown}
-              onSubmit ={handleSubmit}
+              onSubmit={handleSubmit}
             />
           </Navbar.Collapse>
         </Navbar>

@@ -20,7 +20,10 @@ You are able GET IN TOUCH with me if there will be any question for support, enc
 
 Each response is important to me.
 
-TAKE CARE !!!
+Near you,
+
+Lucy Ghalechyan
+
 `;
 
 const About = () => {
