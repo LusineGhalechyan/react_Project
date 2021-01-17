@@ -84,7 +84,6 @@ const reducer = (state = defaultState, action) => {
           ...removeTaskCommonParams,
           task: null,
           removeTaskSuccess: true,
-          task: null,
         };
       } else {
         return {

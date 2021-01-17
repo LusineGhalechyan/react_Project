@@ -1,9 +1,18 @@
+$inputSearchFocus: 250px !important;
+
 .searchBoxContainer {
   margin: 0 40px 0;
 }
 
 .searchBoxNavDropdown {
   margin-right: 70px !important;
+}
+
+@media (min-width: 992px) {
+  .searchBox {
+    position: absolute !important;
+    right: 0;
+  }
 }
 
 .dateOptions {
@@ -58,7 +67,7 @@ input[type="search"] {
   transition: all 0.5s;
 }
 input[type="search"]:focus {
-  width: 430px !important;
+  width: $inputSearchFocus;
   background-color: #fff;
   border-color: #66cc75;
 

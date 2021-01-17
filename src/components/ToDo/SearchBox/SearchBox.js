@@ -116,22 +116,24 @@ const SearchBox = (props) => {
             </Nav>
 
             <Form inline>
-              <input
-                type="search"
-                placeholder="Search..."
-                className="mr-3 mt-2"
-                value={search}
-                onChange={handleChange}
-                onKeyDown={handleOnKeyDown}
-              />
+              <div className={styles.searchBox}>
+                <input
+                  type="search"
+                  placeholder="Search..."
+                  className="my-2"
+                  value={search}
+                  onChange={handleChange}
+                  onKeyDown={handleOnKeyDown}
+                />
 
-              <Button
-                variant="outline-success"
-                onClick={handleSubmit}
-                className="mt-2"
-              >
-                Search
-              </Button>
+                <Button
+                  variant="outline-success"
+                  onClick={handleSubmit}
+                  className="my-2 mx-4"
+                >
+                  Search
+                </Button>
+              </div>
             </Form>
           </Navbar.Collapse>
         </Navbar>
