@@ -10,6 +10,30 @@
     color: #007bff;
   }
 
+  .cardTextDate {
+    font-size: small;
+    color: #52527a;
+  }
+
+  .singleTaskCardTextStatusActive {
+    color: #f7978c;
+  }
+
+  .singleTaskCardTextStatusDone {
+    color: #2bbe19;
+  }
+
+  .singleTaskButtonStatusActive {
+    background-color: #c724b1 !important;
+    &:hover {
+      background-color: #c724b1 !important;
+    }
+  }
+
+  .singleTaskButtonStatusDone {
+    background-color: #2bbc19 !important;
+  }
+
   .singleTaskCardText {
     color: #52527a;
   }

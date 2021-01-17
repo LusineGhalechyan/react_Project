@@ -115,6 +115,8 @@ const reducer = (state = defaultState, action) => {
     }
 
     case actions.SAVE_EDITED_TASK_SUCCESS: {
+      const editedTask = action.payload.editedTask;
+
       const editTaskCommonParams = {
         ...state,
         loading: false,
@@ -124,17 +126,45 @@ const reducer = (state = defaultState, action) => {
       if (action.payload.from === `single`) {
         return {
           ...editTaskCommonParams,
-          task: action.payload.editedTask,
+          task: editedTask,
         };
       } else {
         let tasks = [...state.tasks];
-        const editedTask = action.payload.editedTask;
         const isElementExists = (task) => task._id === editedTask._id;
         const getTasktIndex = tasks.findIndex(isElementExists);
         tasks[getTasktIndex] = editedTask;
 
         return {
           ...editTaskCommonParams,
+          tasks,
+        };
+      }
+    }
+
+    case actions.CHANGE_TASK_STATUS_SUCCESS: {
+      const editedTask = action.payload.editedTask;
+      const changeTaskStatusCommonParams = {
+        ...state,
+        loading: false,
+        editTaskSuccess: true,
+        successMessage:
+          editedTask.status === "done"
+            ? `🎀 Congratulations, You have completed the task !!!`
+            : `📝 The task is active now !`,
+      };
+      if (action.payload.from === `single`) {
+        return {
+          ...changeTaskStatusCommonParams,
+          task: editedTask,
+        };
+      } else {
+        let tasks = [...state.tasks];
+        const isElementExists = (task) => task._id === editedTask._id;
+        const getTasktIndex = tasks.findIndex(isElementExists);
+        tasks[getTasktIndex] = editedTask;
+
+        return {
+          ...changeTaskStatusCommonParams,
           tasks,
         };
       }

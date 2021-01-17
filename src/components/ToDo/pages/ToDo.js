@@ -11,7 +11,7 @@ import { baseURL } from "../../../helpers/baseURL";
 import { requestMiddleWare } from "../../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { removeSelectedTasksMiddleWare } from "../../../redux/actions";
-import SearchBox from "../SearchBox/SearchBox";
+import SearchSortFilter from "../SearchSortFilter/SearchSortFilter";
 
 const ToDo = () => {
   const initialToDoState = {
@@ -119,7 +119,7 @@ const ToDo = () => {
     <>
       <nav className="navbar">
         <ToDoImg />
-        <SearchBox />
+        <SearchSortFilter />
       </nav>
       <ArmFlag />
       <Container>

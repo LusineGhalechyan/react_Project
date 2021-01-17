@@ -1,5 +1,19 @@
+button {
+  color: #fff !important;
+}
+
+.buttonStatusActive {
+  background-color: #c724b1 !important;
+  &:hover {
+    background-color: #c724b1 !important;
+  }
+}
+
+.buttonStatusDone {
+  background-color: #2bbc19 !important;
+}
+
 .buttonWarning {
-  color: #fff;
   margin: 10px;
 }
 
@@ -16,6 +30,14 @@
 .cardTextDate {
   font-size: small;
   color: #52527a;
+}
+
+.cardTextStatusActive {
+  color: #f7978c;
+}
+
+.cardTextStatusDone {
+  color: #2bbe19;
 }
 
 .limitTextLength {

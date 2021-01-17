@@ -1,8 +1,7 @@
 import axios from "axios";
-import { baseURL } from "./baseURL";
 
 const instance = axios.create({
-  baseURL,
+  baseURL: process.env.REACT_APP_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -45,9 +44,16 @@ export const api = {
     return instance.patch(`${"/task/"}`, axiosPatchRequestValue);
   },
 
-  saveEditedTask(editedTask) {
-    return instance
-      .put(`${"/task/"}${editedTask._id}`, editedTask)
-      .then((response) => response.data);
+  saveEditedTask(editedTask, status) {
+    if (editedTask && !status) {
+      return instance
+        .put(`${"/task/"}${editedTask._id}`, editedTask)
+        .then((response) => response.data);
+    }
+    if (editedTask && status) {
+      return instance
+        .put(`${"/task/"}${editedTask._id}`, status)
+        .then((response) => response.data);
+    }
   },
 };
