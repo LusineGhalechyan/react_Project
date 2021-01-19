@@ -17,7 +17,7 @@ const NavMenu = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <NavLink
-            to="/"
+            to="/profile"
             exact
             className={styles.navLink}
             activeClassName={styles.activePage}

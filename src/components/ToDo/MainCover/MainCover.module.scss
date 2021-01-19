@@ -1,0 +1,51 @@
+@import url("http://fonts.googleapis.com/css?family=Indie+Flower");
+
+.mainCover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.mainCoverContent {
+  position: absolute;
+  top: 40.3%;
+  left: 42.3%;
+  font-family: "Indie Flower";
+  font-size: 48px;
+}
+
+.mainCoverLogo {
+  position: absolute;
+  top: 60%;
+  left: 60%;
+  width: 170px;
+  transform: rotate(-15deg);
+}
+
+.mainCoverButton {
+  position: absolute;
+  top: 75%;
+  left: 42.3%;
+}
+
+@media (max-width: 1490px) {
+  .mainCoverContent {
+    display: flex;
+    font-size: 38px;
+    width: 50px;
+    margin-left: 20px;
+  }
+  .mainCoverLogo {
+    width: 100px;
+    margin-top: 50px;
+  }
+  .mainCoverButton {
+    margin-left: 20px;
+  }
+}

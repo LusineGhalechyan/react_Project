@@ -12,6 +12,7 @@ import { requestMiddleWare } from "../../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { removeSelectedTasksMiddleWare } from "../../../redux/actions";
 import SearchSortFilter from "../SearchSortFilter/SearchSortFilter";
+import Footer from "../../../Footer/Footer";
 
 const ToDo = () => {
   const initialToDoState = {
@@ -162,6 +163,7 @@ const ToDo = () => {
         />
       )}
       {openNewTaskModal && <NewTasksInput onClose={toggleNewTaskModal} />}
+      <Footer />
     </>
   );
 };

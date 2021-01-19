@@ -127,9 +127,12 @@ const SearchSortFilter = (props) => {
         <div className={styles.dateOptions}>
           {dateOptions.map((item, index) => (
             <div key={index} className={styles.dateOptionsItems}>
-              <span className="mx-1">{item.label}</span>
+              <span className={`${styles.datePickerText} mx-1`}>
+                {item.label}
+              </span>
               <DatePicker
                 selected={dates[item.value]}
+                className={styles.datePicker}
                 onChange={(date) => {
                   setDates({
                     ...dates,

@@ -8,3 +8,5 @@ class BaseURL {
 
 const api = new BaseURL();
 export const baseURL = api[_baseURL]();
+
+export const { REACT_APP_API_URL } = process.env;

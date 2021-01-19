@@ -3,9 +3,21 @@
 }
 
 .btn-warning {
-  // color: #212529;
   background-color: #4cdaed !important;
   border-color: #4cdaed !important;
+}
+
+.btn-outline-danger {
+  color: #ff4d94 !important;
+  border-color: #ff4d94 !important;
+  &:hover {
+    color: #fff !important;
+    background-color: #ff4d94 !important;
+    border-color: #ff4d94 !important;
+  }
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 77, 148, 0.5) !important;
+  }
 }
 
 ::-webkit-scrollbar {

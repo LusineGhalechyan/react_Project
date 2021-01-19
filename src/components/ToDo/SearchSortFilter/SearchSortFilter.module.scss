@@ -1,10 +1,19 @@
 .searchBoxNavDropdown {
   margin-right: 70px !important;
+  color: #6782a3 !important;
 }
 
 .dateOptions {
   display: flex;
   margin-top: 20px;
+
+  .datePicker {
+    border: 1px solid #dfdfdf !important;
+  }
+
+  .datePickerText {
+    color: #7c7c7d !important;
+  }
 }
 
 @media (max-width: 700px) {

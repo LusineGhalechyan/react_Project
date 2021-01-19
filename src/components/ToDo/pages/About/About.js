@@ -3,7 +3,7 @@ import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "./About.module.scss";
 
-const ToDoListDescription = `ToDo List,  
+const ToDoListDescription = `
 
 What does it mean?
 
@@ -19,15 +19,14 @@ Each response is important to me.
 
 Near You,
 
-Lucy Ghalechyan
-`;
+Lucy Ghalechyan`;
 
 const About = () => {
   return (
     <Card border="primary" className={styles.about}>
       <Card.Header as="h5">TODO LIST</Card.Header>
       <Card.Body>
-        <Card.Title>Task List Organizer</Card.Title>
+        <Card.Title className="mt-2">Task List Organizer</Card.Title>
         <Card.Text className={styles.lineBreak}>
           {ToDoListDescription}
         </Card.Text>
