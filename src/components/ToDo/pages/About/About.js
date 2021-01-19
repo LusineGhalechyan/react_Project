@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Footer from "../../../../Footer/Footer";
 import styles from "./About.module.scss";
 
 const ToDoListDescription = `
@@ -23,26 +24,29 @@ Lucy Ghalechyan`;
 
 const About = () => {
   return (
-    <Card border="primary" className={styles.about}>
-      <Card.Header as="h5">TODO LIST</Card.Header>
-      <Card.Body>
-        <Card.Title className="mt-2">Task List Organizer</Card.Title>
-        <Card.Text className={styles.lineBreak}>
-          {ToDoListDescription}
-        </Card.Text>
-        <Button variant="link" className={styles.aboutCardButton}>
-          <Link to="/contact" className={styles.aboutCardLink}>
-            GET IN TOUCH &gt;&gt;
-          </Link>
-        </Button>
-      </Card.Body>
-      <Card.Footer className="text-muted">
-        <span>
-          &#128630; All I ask is that TODAY YOU do the BEST WORK of Your entire
-          Life &#128631; &nbsp; &ndash;Steve Jobs
-        </span>
-      </Card.Footer>
-    </Card>
+    <>
+      <Card border="primary" className={styles.about}>
+        <Card.Header as="h5">TODO LIST</Card.Header>
+        <Card.Body>
+          <Card.Title className="mt-2">Task List Organizer</Card.Title>
+          <Card.Text className={styles.lineBreak}>
+            {ToDoListDescription}
+          </Card.Text>
+          <Button variant="link" className={styles.aboutCardButton}>
+            <Link to="/contact" className={styles.aboutCardLink}>
+              GET IN TOUCH &gt;&gt;
+            </Link>
+          </Button>
+        </Card.Body>
+        <Card.Footer className="text-muted">
+          <span>
+            &#128630; All I ask is that TODAY YOU do the BEST WORK of Your
+            entire Life &#128631; &nbsp; &ndash;Steve Jobs
+          </span>
+        </Card.Footer>
+      </Card>
+      <Footer />
+    </>
   );
 };
 

@@ -19,7 +19,6 @@ const send = async (values) => {
     name: values.name,
     email: values.email,
     body: values.message,
-    phone: values.phone || "",
   };
 
   try {

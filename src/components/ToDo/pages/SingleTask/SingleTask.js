@@ -34,7 +34,7 @@ class SingleTask extends PureComponent {
     }
 
     if (!prevProps.removeTaskSuccess && this.props.removeTaskSuccess) {
-      this.props.history.push("/");
+      this.props.history.push("/profile");
     }
   }
 

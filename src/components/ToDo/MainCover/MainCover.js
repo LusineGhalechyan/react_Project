@@ -25,7 +25,6 @@ const MainCover = () => {
         <Button
           variant="outline-danger"
           className={styles.mainCoverButton}
-          onClick={() => {}}
         >
           <FontAwesomeIcon icon={faFingerprint} /> Get Started !
         </Button>
