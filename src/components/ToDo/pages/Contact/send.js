@@ -15,9 +15,10 @@ const defaultAPI = async ({ body = null, url, method = "GET" }) => {
 };
 
 const send = async (values) => {
-  const body = {
+  const body = {  
+    name: values.name,
     email: values.email,
-    body: values.message,
+    message: values.message,
   };
 
   try {
