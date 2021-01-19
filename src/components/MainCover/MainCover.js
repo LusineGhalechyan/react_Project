@@ -9,15 +9,15 @@ const MainCover = () => {
   return (
     <div>
       <img
-        src={require("../../../assets/images/mainCover.png")}
+        src={require("../../assets/images/mainCover.png")}
         alt="CoverPhoto"
         className={styles.mainCover}
       />
-      <div className={styles.mainCoverContent}>Welcome to My ToDo App!</div>
+      <div className={styles.mainCoverContent}>Welcome to My ToDo App !</div>
 
       <img
         className={styles.mainCoverLogo}
-        src={require("../../../assets/images/logo.png")}
+        src={require("../../assets/images/logo.png")}
         alt="logo"
       />
 

@@ -9,14 +9,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Task.module.scss";
 import PropTypes from "prop-types";
-import { formatDate } from "../../../helpers/utils";
+import { formatDate } from "../../helpers/utils";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   removeTaskMiddleWare,
   changeTasksStatusMiddleWare,
-} from "../../../redux/actions";
-import { trimString } from "../../../helpers/trimString";
+} from "../../redux/actions";
+import { trimString } from "../../helpers/trimString";
 
 class Task extends PureComponent {
   state = {

@@ -8,14 +8,14 @@ import {
   faHistory,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./SingleTask.module.scss";
-import { formatDate } from "../../../../helpers/utils";
+import { formatDate } from "../../../helpers/utils";
 import EditTaskModal from "../../EditTaskModal/EditTaskModal";
 import { connect } from "react-redux";
 import {
   requestSingleTaskMiddleWare,
   removeTaskMiddleWare,
   changeTasksStatusMiddleWare,
-} from "../../../../redux/actions";
+} from "../../../redux/actions";
 import NotFoundTask from "../NotFound/NotFoundPage/NotFoundTask/NotFoundTask";
 
 class SingleTask extends PureComponent {

@@ -2,12 +2,12 @@ import React from "react";
 import "./App.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Switch, Redirect } from "react-router-dom";
-import NavMenu from "./components/ToDo/NavMenu/NavMenu";
+import NavMenu from "./components/NavMenu/NavMenu";
 import { routesData } from "./dataPlaceholder/routesData";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
-import Spinner from "./components/ToDo/Spinner/Spinner";
+import Spinner from "./components/Spinner/Spinner";
 
 function App() {
   const state = useSelector((state) => {

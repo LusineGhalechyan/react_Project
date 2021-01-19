@@ -3,7 +3,8 @@ import { Formik, ErrorMessage, Field } from "formik";
 import styles from "./Contact.module.scss";
 import form from "./validSchema";
 import send from "./send";
-import Footer from "../../../../Footer/Footer";
+import Footer from "../../Footer/Footer";
+// import Footer from "../../../../Footer/Footer";
 
 const Contact = () => {
   return (
@@ -99,7 +100,8 @@ const Contact = () => {
           ></iframe>
         </p>
       </section>
-      <Footer />
+      {/* <Footer /> */}
+      <Footer/>
     </>
   );
 };

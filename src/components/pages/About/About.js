@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Footer from "../../../../Footer/Footer";
+import Footer from "../../Footer/Footer";
 import styles from "./About.module.scss";
 
 const ToDoListDescription = `

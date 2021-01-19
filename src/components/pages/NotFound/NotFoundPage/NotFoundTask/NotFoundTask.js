@@ -6,7 +6,8 @@ const NotFoundTask = () => {
     <>
       <div className={styles.notFoundTaskChicken}>
         <img
-          src={require("../../../../../../assets/images/chicken.png")}
+          src={require("../../../../../assets/images/chicken.png")}
+
           alt="chicken"
           width="30%"
         />

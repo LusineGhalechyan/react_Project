@@ -1,26 +1,25 @@
 import React, { PureComponent, createRef } from "react";
-import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
+import { Modal, Button, Form, FormControl, InputGroup } from "react-bootstrap";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
-import { addNewTaskMiddleWare } from "../../../redux/actions";
+import { saveEditedTaskMiddleWare } from "../../redux/actions";
 
-class NewTasksInput extends PureComponent {
+class EditTaskModal extends PureComponent {
   constructor(props) {
     super(props);
-
+    const { date } = props.editTask;
     this.state = {
-      title: "",
-      description: "",
-      date: new Date(),
+      ...props.editTask,
+      date: date ? new Date(date) : new Date(),
     };
 
-    this.newTaskTitleRef = createRef(null);
+    this.titleRef = createRef(null);
   }
 
   componentDidMount() {
-    this.newTaskTitleRef.current.focus();
+    this.titleRef.current.focus();
   }
 
   handleChange = (event) => {
@@ -37,38 +36,32 @@ class NewTasksInput extends PureComponent {
     });
   };
 
-  handleOnKeyDown = (event) => {
-    const { title } = this.state;
-    return title && event.key === "Enter" ? this.handleAddTask() : 0;
-  };
+  handleSave = () => {
+    const { title, date } = this.state;
+    const { saveEditedTaskMiddleWare } = this.props;
 
-  handleAddTask = () => {
-    const { title, description, date } = this.state;
+    if (!title) return;
 
-    if (!title) return false;
-
-    const newTaskToBackend = {
-      title,
-      description,
+    const editedTasktoBackend = {
+      ...this.state,
       date: date.toISOString().slice(0, 10),
     };
-
-    this.props.addNewTaskMiddleWare(newTaskToBackend);
+    saveEditedTaskMiddleWare(editedTasktoBackend, this.props.from);
   };
 
   render() {
     const { onClose } = this.props;
-    const { date } = this.state;
+    const { title, description, date } = this.state;
 
-    const addTaskModalContent = (
+    const editTaskModalContent = (
       <>
         <InputGroup className="mb-4">
           <FormControl
             type="text"
             name="title"
+            value={title}
+            ref={this.titleRef}
             placeholder="Title"
-            value={this.state.value}
-            ref={this.newTaskTitleRef}
             onChange={this.handleChange}
             onKeyDown={this.handleOnKeyDown}
           />
@@ -79,6 +72,7 @@ class NewTasksInput extends PureComponent {
             rows={3}
             as="textarea"
             name="description"
+            value={description}
             onChange={this.handleChange}
           />
         </Form.Group>
@@ -93,12 +87,12 @@ class NewTasksInput extends PureComponent {
     return (
       <Modal show onHide={onClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Add new task</Modal.Title>
+          <Modal.Title>Edit task</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{addTaskModalContent}</Modal.Body>
+        <Modal.Body>{editTaskModalContent}</Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" type="submit" onClick={this.handleAddTask}>
-            Add
+          <Button variant="primary" type="submit" onClick={this.handleSave}>
+            Save
           </Button>
           <Button variant="secondary" onClick={onClose}>
             Cancel
@@ -109,11 +103,14 @@ class NewTasksInput extends PureComponent {
   }
 }
 
-NewTasksInput.propTypes = {
+EditTaskModal.propTypes = {
+  editTask: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
+  from: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = {
-  addNewTaskMiddleWare,
+  saveEditedTaskMiddleWare,
 };
-export default connect(null, mapDispatchToProps)(NewTasksInput);
+
+export default connect(null, mapDispatchToProps)(EditTaskModal);

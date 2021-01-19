@@ -1,6 +1,6 @@
 import axios from "axios";
-import { REACT_APP_API_URL } from "../../../../helpers/baseURL";
-import { toast } from 'react-toastify';
+import { REACT_APP_API_URL } from "../../../helpers/baseURL";
+import { toast } from "react-toastify";
 
 const defaultAPI = async ({ body = null, url, method = "GET" }) => {
   const response = await axios({
@@ -16,7 +16,7 @@ const defaultAPI = async ({ body = null, url, method = "GET" }) => {
 };
 
 const send = async (values) => {
-  const body = {  
+  const body = {
     name: values.name,
     email: values.email,
     message: values.message,
@@ -29,7 +29,7 @@ const send = async (values) => {
       method: "POST",
     });
     if (result) {
-     toast.success(" 🎉Success !!!");
+      toast.success(" 🎉Success !!!");
     }
   } catch (e) {
     toast.error("🚫 Request Failed, please, try again !");

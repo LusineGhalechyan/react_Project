@@ -1,5 +1,5 @@
 import axios from "axios";
-import { REACT_APP_API_URL } from "../helpers/baseURL";
+import { REACT_APP_API_URL } from "./baseURL";
 
 const instance = axios.create({
   baseURL: REACT_APP_API_URL,

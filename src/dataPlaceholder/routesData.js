@@ -1,9 +1,9 @@
-import MainCover from "../components/ToDo/MainCover/MainCover";
-import ToDo from "../components/ToDo/pages/ToDo";
-import About from "../components/ToDo/pages/About/About";
-import SingleTask from "../components/ToDo/pages/SingleTask/SingleTask";
-import Contact from "../components/ToDo/pages/Contact/Contact";
-import NotFound from "../components/ToDo/pages/NotFound/NotFoundPage/NotFound";
+import MainCover from "../components/MainCover/MainCover";
+import ToDo from "../components/ToDo/ToDo";
+import About from "../components/pages/About/About";
+import SingleTask from "../components/pages/SingleTask/SingleTask";
+import Contact from "../components/pages/Contact/Contact";
+import NotFound from "../components/pages/NotFound/NotFoundPage/NotFound";
 
 export const routesData = [
   {

@@ -4,8 +4,8 @@ import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { connect } from "react-redux";
-import { requestMiddleWare } from "../../../redux/actions";
-import { jsDateformatter } from "../../../helpers/utils";
+import { requestMiddleWare } from "../../redux/actions";
+import { jsDateformatter } from "../../helpers/utils";
 import SearchBox from "../SearchBox/SearchBox";
 
 const statusOptions = [

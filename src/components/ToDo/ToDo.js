@@ -7,12 +7,12 @@ import Confirm from "../Confirm/Confirm";
 import EditTaskModal from "../EditTaskModal/EditTaskModal";
 import styles from "../NewTasksInput/NewTasksInput.module.scss";
 import ToDoImg from "../ToDoImg/ToDoImg";
-import { baseURL } from "../../../helpers/baseURL";
-import { requestMiddleWare } from "../../../redux/actions";
+import { baseURL } from "../../helpers/baseURL";
+import { requestMiddleWare } from "../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
-import { removeSelectedTasksMiddleWare } from "../../../redux/actions";
+import { removeSelectedTasksMiddleWare } from "../../redux/actions";
 import SearchSortFilter from "../SearchSortFilter/SearchSortFilter";
-import Footer from "../../../Footer/Footer";
+import Footer from "../Footer/Footer";
 
 const ToDo = () => {
   const initialToDoState = {
