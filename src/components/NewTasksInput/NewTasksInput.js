@@ -1,0 +1,119 @@
+import React, { PureComponent, createRef } from "react";
+import { InputGroup, FormControl, Button, Modal, Form } from "react-bootstrap";
+import PropTypes from "prop-types";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { connect } from "react-redux";
+import { addNewTaskMiddleWare } from "../../redux/actions";
+
+class NewTasksInput extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      title: "",
+      description: "",
+      date: new Date(),
+    };
+
+    this.newTaskTitleRef = createRef(null);
+  }
+
+  componentDidMount() {
+    this.newTaskTitleRef.current.focus();
+  }
+
+  handleChange = (event) => {
+    const { name, value } = event.target;
+
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  handleDateChange = (date) => {
+    this.setState({
+      date,
+    });
+  };
+
+  handleOnKeyDown = (event) => {
+    const { title } = this.state;
+    return title && event.key === "Enter" ? this.handleAddTask() : 0;
+  };
+
+  handleAddTask = () => {
+    const { title, description, date } = this.state;
+
+    if (!title) return false;
+
+    const newTaskToBackend = {
+      title,
+      description,
+      date: date.toISOString().slice(0, 10),
+    };
+
+    this.props.addNewTaskMiddleWare(newTaskToBackend);
+  };
+
+  render() {
+    const { onClose } = this.props;
+    const { date } = this.state;
+
+    const addTaskModalContent = (
+      <>
+        <InputGroup className="mb-4">
+          <FormControl
+            type="text"
+            name="title"
+            placeholder="Title"
+            value={this.state.value}
+            ref={this.newTaskTitleRef}
+            onChange={this.handleChange}
+            onKeyDown={this.handleOnKeyDown}
+          />
+        </InputGroup>
+        <Form.Group controlId="exampleForm.ControlTextarea">
+          <Form.Label>Task Description</Form.Label>
+          <Form.Control
+            rows={3}
+            as="textarea"
+            name="description"
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+        <DatePicker
+          selected={date}
+          onChange={this.handleDateChange}
+          minDate={new Date()}
+        />
+      </>
+    );
+
+    return (
+      <Modal show onHide={onClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Add new task</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{addTaskModalContent}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" type="submit" onClick={this.handleAddTask}>
+            Add
+          </Button>
+          <Button variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+}
+
+NewTasksInput.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = {
+  addNewTaskMiddleWare,
+};
+export default connect(null, mapDispatchToProps)(NewTasksInput);

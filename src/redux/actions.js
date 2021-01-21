@@ -34,6 +34,13 @@ const addNewTaskSuccess = (data) => ({
   },
 });
 
+const addFormSuccess = () => ({
+  type: actions.ADD_FORM_DATA_SUCCESS,
+  payload: {
+    success: `🎉Success !!!`,
+  },
+});
+
 const removeTaskSuccess = (removableTask, from) => ({
   type: actions.REMOVE_TASK_SUCCESS,
   payload: {
@@ -99,6 +106,16 @@ const addNewTaskMiddleWare = (newTaskToBackend) => async (dispatch) => {
   }
 };
 
+const addFormDataMiddleWare = (formValues) => async (dispatch) => {
+  dispatch(loading());
+  try {
+    await api.postForm(formValues);
+    dispatch(addFormSuccess());
+  } catch (error) {
+    dispatch(errorInfetchingData());
+  }
+};
+
 const removeTaskMiddleWare = (task, from) => async (dispatch) => {
   dispatch(loading());
   try {
@@ -154,4 +171,5 @@ export {
   removeSelectedTasksMiddleWare,
   saveEditedTaskMiddleWare,
   changeTasksStatusMiddleWare,
+  addFormDataMiddleWare,
 };

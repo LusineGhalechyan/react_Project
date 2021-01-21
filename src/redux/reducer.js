@@ -10,6 +10,7 @@ const defaultState = {
   removeTaskSuccess: false,
   removeSelectedTasksSuccess: false,
   editTaskSuccess: false,
+  formFulfilled: false,
 };
 
 const reducer = (state = defaultState, action) => {
@@ -24,6 +25,7 @@ const reducer = (state = defaultState, action) => {
         removeSelectedTasksSuccess: false,
         editTaskSuccess: false,
         removeTaskSuccess: false,
+        formFulfilled: false,
       };
     }
 
@@ -66,6 +68,15 @@ const reducer = (state = defaultState, action) => {
         loading: false,
         successMessage: action.payload.success,
         addTaskSuccess: true,
+      };
+    }
+
+    case actions.ADD_FORM_DATA_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        formFulfilled: true,
+        successMessage: action.payload.success,
       };
     }
 

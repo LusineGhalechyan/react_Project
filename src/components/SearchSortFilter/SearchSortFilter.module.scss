@@ -1,0 +1,39 @@
+.searchBoxNavDropdown {
+  margin-right: 70px !important;
+  color: #6782a3 !important;
+}
+
+.dateOptions {
+  display: flex;
+  margin-top: 20px;
+
+  .datePicker {
+    border: 1px solid #dfdfdf !important;
+  }
+
+  .datePickerText {
+    color: #7c7c7d !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .dateOptions {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+  }
+}
+
+@media (max-width: 820px) {
+  ._searchBoxContainer {
+    padding: 0 !important;
+    margin: 0 0 40px !important;
+  }
+}
+
+@media (max-width: 1495px) {
+  ._searchBoxContainer {
+    margin: 0 30px 40px !important;
+  }
+}

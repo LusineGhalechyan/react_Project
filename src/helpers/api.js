@@ -1,7 +1,8 @@
 import axios from "axios";
+import { REACT_APP_API_URL } from "./baseURL";
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: REACT_APP_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -33,6 +34,12 @@ export const api = {
   postTask(newTaskToBackend) {
     return instance
       .post(`${"/task"}`, newTaskToBackend)
+      .then((response) => response.data);
+  },
+
+  postForm(formValues) {
+    return instance
+      .post(`${"/form"}`, formValues)
       .then((response) => response.data);
   },
 
