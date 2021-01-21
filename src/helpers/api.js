@@ -37,6 +37,12 @@ export const api = {
       .then((response) => response.data);
   },
 
+  postForm(formValues) {
+    return instance
+      .post(`${"/form"}`, formValues)
+      .then((response) => response.data);
+  },
+
   removeTask(taskId) {
     return instance.delete(`${"/task/"}${taskId}`);
   },

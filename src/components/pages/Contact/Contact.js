@@ -1,44 +1,81 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, ErrorMessage, Field } from "formik";
 import styles from "./Contact.module.scss";
 import form from "./validSchema";
-import send from "./send";
 import Footer from "../../Footer/Footer";
-// import Footer from "../../../../Footer/Footer";
+import { useSelector, useDispatch } from "react-redux";
+import { addFormDataMiddleWare } from "../../../redux/actions";
 
 const Contact = () => {
+  const dispatch = useDispatch();
+  const formFulfilled = useSelector((state) => state.formFulfilled);
+  const [formikValues, setFormikValues] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  useEffect(() => {
+    formFulfilled && setFormikValues({ name: "", email: "", message: "" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formFulfilled]);
+
   return (
     <>
       <section className={styles.contactContainer}>
         <h2 className={styles.contactHeader}>Contact</h2>
 
         <Formik
-          onSubmit={(values) => send(values)}
+          onSubmit={(values) => dispatch(addFormDataMiddleWare(values))}
           validationSchema={form}
           initialValues={{ name: "", email: "", message: "" }}
           validateOnChange={true}
           initialErrors={false}
         >
-          {({ errors, touched, submitForm }) => {
+          {({ errors, touched, submitForm, handleChange }) => {
+            const onChange = (e) => {
+              const { name, value } = e.target;
+
+              setFormikValues({
+                ...formikValues,
+                [name]: value,
+              });
+              return handleChange(e);
+            };
+
             return (
               <form>
-                <Field placeholder="Name" type="text" name="name" />
+                <Field
+                  type="text"
+                  name="name"
+                  placeholder="Name"
+                  value={formikValues.name}
+                  onChange={onChange}
+                />
                 <ErrorMessage
                   name="name"
                   component="span"
                   className={styles.contactError}
                 />
-                <Field placeholder="Email" type="email" name="email" />
+                <Field
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={formikValues.email}
+                  onChange={onChange}
+                />
                 <ErrorMessage
                   name="email"
                   component="span"
                   className={styles.contactError}
                 />
                 <Field
+                  as="textarea"
+                  name="message"
+                  value={formikValues.message}
                   placeholder="Your message here..."
                   className={styles.contactTextArea}
-                  name="message"
-                  as="textarea"
+                  onChange={onChange}
                 />
                 <ErrorMessage
                   name="message"
@@ -100,8 +137,7 @@ const Contact = () => {
           ></iframe>
         </p>
       </section>
-      {/* <Footer /> */}
-      <Footer/>
+      <Footer />
     </>
   );
 };
